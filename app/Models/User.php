@@ -12,6 +12,27 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->id = 'U' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+        });
+    }
+
+    protected static function maxIdNumber()
+    {
+        $maxId = static::max('id');
+        if ($maxId) {
+            return intval(substr($maxId, 1));
+        }
+        return 0;
+    }
+    
     /**
      * The attributes that are mass assignable.
      *
