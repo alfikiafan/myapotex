@@ -12,7 +12,7 @@
         <div class="ms-md-auto pe-md-3 d-flex align-items-center">
         </div>
         <div class="navbar-nav justify-content-end">
-        <span>{{ \Carbon\Carbon::now()->format('l, d-m-Y H:i') }}</span>
+        <span>{{ \Carbon\Carbon::now()->setTimezone('Asia/Jakarta')->format('l, d-m-Y H:i') }}</span>
         </div>
     </div>
     </div>

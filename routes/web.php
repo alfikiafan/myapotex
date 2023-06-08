@@ -14,12 +14,10 @@ use App\Http\Controllers\MedicineController;
 |
 */
 
-Route::get('/', function () {
-    return Redirect::to('/medicines');
-});
+Route::redirect('/', '/medicines');
 
 Route::get('/medicines', function () {
-    return view('medicines');
+    return view('index');
 });
 
 Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');

@@ -7,12 +7,24 @@ use Illuminate\Http\Request;
 
 class MedicineController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $medicines = Medicine::all();
-        $medicines = Medicine::paginate(4);
-        return view('medicines', ['medicines' => $medicines]);
-    }
+        $search = $request->input('search');
+    
+        if ($search) {
+            $medicines = Medicine::where('name', 'like', "%$search%")
+                ->orWhere('brand', 'like', "%$search%")
+                ->orWhere('category', 'like', "%$search%")
+                ->orWhere('quantity', 'like', "%$search%")
+                ->orWhere('discount', 'like', "%$search%")
+                ->orWhere('price', 'like', "%$search%")
+                ->paginate(8);
+        } else {
+            $medicines = Medicine::paginate(8);
+        }
+    
+        return view('medicines.index', compact('medicines'));
+    }    
 
     public function store(Request $request)
     {
