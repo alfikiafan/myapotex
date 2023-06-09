@@ -30,12 +30,12 @@ class MedicineController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|min:3',
             'brand' => 'required',
             'category' => 'required',
-            'quantity' => 'required|integer',
-            'discount' => 'required|numeric',
-            'price' => 'required|numeric',
+            'quantity' => 'required|integer|min:0',
+            'discount' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
         ]);
 
         $validatedData['discount'] = $validatedData['discount'] / 100;
@@ -58,12 +58,12 @@ class MedicineController extends Controller
     public function update(Request $request, Medicine $medicine)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|min:3',
             'brand' => 'required',
             'category' => 'required',
-            'quantity' => 'required|integer',
-            'discount' => 'required|numeric',
-            'price' => 'required|numeric',
+            'quantity' => 'required|integer|min:0',
+            'discount' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
         ]);
     
         $validatedData['discount'] = $validatedData['discount'] / 100;
