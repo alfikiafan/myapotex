@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
@@ -14,6 +15,13 @@ use App\Http\Controllers\UserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+// Sessions
+Route::get('/login', [SessionsController::class, 'create'])->name('login')->middleware('guest');
+Route::post('/login', [SessionsController::class, 'store'])->middleware('guest');
+Route::post('/logout', [SessionsController::class, 'destroy'])->name('logout')->middleware('auth');
+Route::redirect('/home', '/')->middleware('auth');
 
 // Rute Medicine
 
