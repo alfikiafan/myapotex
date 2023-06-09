@@ -414,6 +414,6 @@ function sidenavTypeOnResize() {
 
 // Function to select role
 function selectRole(role) {
-  document.getElementById('selectedRoleText').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  document.getElementById('selectedRoleText').textContent = role;
   document.getElementById('selectedRole').value = role;
 }

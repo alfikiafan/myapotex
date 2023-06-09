@@ -39,9 +39,9 @@ Route::get('/accounts', function () {
 Route::get('/accounts', [UserController::class, 'index'])->name('accounts.index');
 Route::post('/accounts', [UserController::class, 'store'])->name('accounts.store');
 Route::get('/accounts/create', [UserController::class, 'create'])->name('accounts.create');
-Route::get('/accounts/{medicine}/edit', [UserController::class, 'edit'])->name('accounts.edit');
-Route::put('/accounts/{medicine}', [UserController::class, 'update'])->name('accounts.update');
-Route::delete('/accounts/{medicine}', [UserController::class, 'destroy'])->name('accounts.destroy');
+Route::get('/accounts/{user}/edit', [UserController::class, 'edit'])->name('accounts.edit');
+Route::put('/accounts/{user}', [UserController::class, 'update'])->name('accounts.update');
+Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
 
 // Rute Sementara
 Route::get('/dashboard', function () {

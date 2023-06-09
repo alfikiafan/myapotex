@@ -51,7 +51,7 @@
                         <label for="role">Role</label>
                         <div class="dropdown">
                         <button class="btn btn-white me-2 dropdown-toggle" type="button" id="roleDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="selectedRoleText">Selected Role</span>
+                            <span id="selectedRoleText">Selected role</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="roleDropdown">
                             <li><a class="dropdown-item" href="#" onclick="selectRole('administrator')">Administrator</a></li>
