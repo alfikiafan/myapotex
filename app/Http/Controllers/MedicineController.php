@@ -12,7 +12,8 @@ class MedicineController extends Controller
         $search = $request->input('search');
     
         if ($search) {
-            $medicines = Medicine::where('name', 'like', "%$search%")
+            $medicines = Medicine::where('id', 'like', "%$search%")
+                ->orWhere('name', 'like', "%$search%")
                 ->orWhere('brand', 'like', "%$search%")
                 ->orWhere('category', 'like', "%$search%")
                 ->orWhere('quantity', 'like', "%$search%")
@@ -24,7 +25,7 @@ class MedicineController extends Controller
         }
     
         return view('medicines.index', compact('medicines'));
-    }    
+    }
 
     public function store(Request $request)
     {

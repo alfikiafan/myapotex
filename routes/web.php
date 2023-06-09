@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,19 @@ Route::get('/medicines/{medicine}/edit', [MedicineController::class, 'edit'])->n
 Route::put('/medicines/{medicine}', [MedicineController::class, 'update'])->name('medicines.update');
 Route::delete('/medicines/{medicine}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 
+// Rute Accounts
+
+Route::get('/accounts', function () {
+    return view('index');
+})->name('accounts.index');
+
+Route::get('/accounts', [UserController::class, 'index'])->name('accounts.index');
+Route::post('/accounts', [UserController::class, 'store'])->name('accounts.store');
+Route::get('/accounts/create', [UserController::class, 'create'])->name('accounts.create');
+Route::get('/accounts/{medicine}/edit', [UserController::class, 'edit'])->name('accounts.edit');
+Route::put('/accounts/{medicine}', [UserController::class, 'update'])->name('accounts.update');
+Route::delete('/accounts/{medicine}', [UserController::class, 'destroy'])->name('accounts.destroy');
+
 // Rute Sementara
 Route::get('/dashboard', function () {
     return redirect()->route('medicines.index');
@@ -37,10 +51,6 @@ Route::get('/dashboard', function () {
 Route::get('/sales', function () {
     return redirect()->route('medicines.index');
 })->name('sales.index');
-
-Route::get('/account', function () {
-    return redirect()->route('medicines.index');
-})->name('account.index');
 
 Route::get('/logout', function () {
     return redirect()->route('medicines.index');

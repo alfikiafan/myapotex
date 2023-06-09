@@ -15,13 +15,25 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create('id_ID');
-
-        for ($i = 0; $i < 10; $i++) {
+        $adminCount = 3;
+        $cashierCount = 5;
+        $totalUsers = $adminCount + $cashierCount;
+        for ($i = 0; $i < $adminCount; $i++) {
             User::create([
                 'name' => $faker->name,
                 'email' => $faker->unique()->safeEmail,
                 'password' => bcrypt('password'),
                 'joining_date' => $faker->date('Y-m-d'),
+                'role' => 'administrator',
+            ]);
+        }
+        for ($i = $adminCount; $i < $totalUsers; $i++) {
+            User::create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => bcrypt('password'),
+                'joining_date' => $faker->date('Y-m-d'),
+                'role' => 'cashier',
             ]);
         }
     }

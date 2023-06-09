@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse px-4  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('dashboard') }}">
+          <a class="nav-link {{ request()->routeIs('dashboard') ? ' active' : '' }}" href="{{ route('dashboard') }}">
             <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
               <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>Dashboard</title>
@@ -25,7 +25,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="{{ route('medicines.index') }}">
+          <a class="nav-link {{ request()->routeIs('medicines.index') ? ' active' : '' }}" href="{{ route('medicines.index') }}">
             <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
               <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>table</title>
@@ -43,7 +43,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('sales.index') }}">
+          <a class="nav-link {{ request()->routeIs('sales.index') ? ' active' : '' }}" href="{{ route('sales.index') }}">
             <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
               <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>wallet</title>
@@ -59,7 +59,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="{{ route('account.index') }}">
+          <a class="nav-link {{ request()->routeIs('accounts.index') ? ' active' : '' }}" href="{{ route('accounts.index') }}">
             <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">      
               <svg width="24" height="24" viewBox="-5 0 56 56" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>account</title>
@@ -71,7 +71,7 @@
           </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('logout') }}">
+            <a class="nav-link {{ request()->routeIs('logout') ? ' active' : ''}}" href="{{ route('logout') }}">
                 <div class="icon icon-shape icon-sm px-0 text-center d-flex align-items-center justify-content-center">
                     <svg width="30px" height="30px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <title>rtl</title>
