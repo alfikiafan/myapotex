@@ -30,7 +30,7 @@ class MedicineController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3',
+            'name' => 'required',
             'brand' => 'required',
             'category' => 'required',
             'quantity' => 'required|integer|min:0',
@@ -58,7 +58,7 @@ class MedicineController extends Controller
     public function update(Request $request, Medicine $medicine)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:3',
+            'name' => 'required',
             'brand' => 'required',
             'category' => 'required',
             'quantity' => 'required|integer|min:0',
