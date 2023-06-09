@@ -21,13 +21,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="name">Medicine Name</label>
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Medicine Name">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Medicine Name" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="brand">Brand</label>
-                  <input type="text" name="brand" class="form-control" id="brand" placeholder="Brand">
+                  <input type="text" name="brand" class="form-control" id="brand" placeholder="Brand" required>
                 </div>
               </div>
             </div>
@@ -35,13 +35,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="category">Category</label>
-                  <input type="text" name="category" class="form-control" id="category" placeholder="Category">
+                  <input type="text" name="category" class="form-control" id="category" placeholder="Category" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="quantity">Quantity</label>
-                  <input type="number" name="quantity" class="form-control" id="quantity" placeholder="Quantity">
+                  <input type="number" name="quantity" class="form-control" id="quantity" min="0" step="1" placeholder="Quantity" required>
                 </div>
               </div>
             </div>
@@ -49,13 +49,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="discount">Discount (%)</label>
-                  <input type="number" name="discount" class="form-control" id="discount" placeholder="Discount" step="0.01">
+                  <input type="number" name="discount" class="form-control" id="discount" placeholder="Discount" min="0" step="1" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="price">Price</label>
-                  <input type="number" name="price" class="form-control" id="price" placeholder="Price">
+                  <label for="price">Price (Rp)</label>
+                  <input type="number" name="price" class="form-control" id="price" placeholder="Price" min="0" step="100" required>
                 </div>
               </div>
             </div>
