@@ -42,21 +42,21 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="quantity">Quantity</label>
-                  <input type="text" name="quantity" class="form-control" id="quantity" value="{{ $medicine->quantity }}">
+                  <input type="number" name="quantity" class="form-control" id="quantity" value="{{ $medicine->quantity }}">
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="discount">Discount</label>
-                  <input type="text" name="discount" class="form-control" id="discount" value="{{ $medicine->discount }}">
+                  <label for="discount">Discount (%)</label>
+                  <input type="number" name="discount" class="form-control" id="discount" value="{{ $medicine->discount * 100 }}" step="0.01">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="price">Price</label>
-                  <input type="text" name="price" class="form-control" id="price" value="{{ $medicine->price }}">
+                  <input type="number" name="price" class="form-control" id="price" value="{{ $medicine->price }}">
                 </div>
               </div>
             </div>
