@@ -4,8 +4,8 @@
     <div class="container-fluid py-1 px-2">
     <nav>
     <h6>
-        <span class="font-weight-bold mb-0">Welcome, User</span>
-        <span class="ms-5">Role: Administrator</span>
+        <span class="font-weight-bold mb-0">Welcome, {{auth()->user()->name??'UNKNOWN'}}</span>
+        <span class="ms-5">Role: {{auth()->user()->role??'GUEST?!?!???'}}</span>
     </h6>
     </nav>
     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
