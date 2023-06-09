@@ -17,9 +17,9 @@ class UserController extends Controller
                 ->orWhere('email', 'like', "%$search%")
                 ->orWhere('role', 'like', "%$search%")
                 ->orWhere('joining_date', 'like', "%$search%")
-                ->paginate(4);
+                ->paginate(8);
         } else {
-            $users = User::paginate(4);
+            $users = User::paginate(8);
         }
     
         return view('accounts.index', compact('users'));

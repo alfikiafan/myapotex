@@ -27,7 +27,7 @@ class MedicineSeeder extends Seeder
             'brand' => 'Biocillin',
             'category' => 'Kapsul',
             'quantity' => 30,
-            'discount' => 0.2,
+            'discount' => 0,
             'price' => 15000,
         ]);
 
@@ -36,7 +36,7 @@ class MedicineSeeder extends Seeder
             'brand' => 'Decolgen',
             'category' => 'Tablet',
             'quantity' => 20,
-            'discount' => 0.05,
+            'discount' => 0,
             'price' => 8000,
         ]);
 
@@ -45,7 +45,7 @@ class MedicineSeeder extends Seeder
             'brand' => 'Betadine',
             'category' => 'Larutan',
             'quantity' => 10,
-            'discount' => 0.15,
+            'discount' => 0,
             'price' => 20000,
         ]);
 
@@ -63,7 +63,7 @@ class MedicineSeeder extends Seeder
             'brand' => 'Cetiriz',
             'category' => 'Tablet',
             'quantity' => 25,
-            'discount' => 0.05,
+            'discount' => 0,
             'price' => 9000,
         ]);
 
@@ -102,5 +102,185 @@ class MedicineSeeder extends Seeder
             'discount' => 0.1,
             'price' => 8000,
         ]);
+
+        Medicine::create([
+            'name' => 'Paracetamol Forte',
+            'brand' => 'Paramex',
+            'category' => 'Tablet',
+            'quantity' => 60,
+            'discount' => 0,
+            'price' => 12000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Ibuprofen',
+            'brand' => 'Nurofen',
+            'category' => 'Tablet',
+            'quantity' => 40,
+            'discount' => 0.1,
+            'price' => 8000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Ciprofloxacin',
+            'brand' => 'Ciproxin',
+            'category' => 'Kapsul',
+            'quantity' => 25,
+            'discount' => 0,
+            'price' => 15000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Loratadine',
+            'brand' => 'Clarityne',
+            'category' => 'Tablet',
+            'quantity' => 30,
+            'discount' => 0,
+            'price' => 10000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Ranitidine',
+            'brand' => 'Zantac',
+            'category' => 'Tablet',
+            'quantity' => 35,
+            'discount' => 0.1,
+            'price' => 8000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Vitamin D',
+            'brand' => 'Caltrate',
+            'category' => 'Tablet',
+            'quantity' => 50,
+            'discount' => 0,
+            'price' => 15000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Metformin',
+            'brand' => 'Glucophage',
+            'category' => 'Tablet',
+            'quantity' => 25,
+            'discount' => 0,
+            'price' => 12000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Propranolol',
+            'brand' => 'Inderal',
+            'category' => 'Tablet',
+            'quantity' => 20,
+            'discount' => 0,
+            'price' => 10000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Dexamethasone',
+            'brand' => 'Decadron',
+            'category' => 'Tablet',
+            'quantity' => 30,
+            'discount' => 0,
+            'price' => 15000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Atenolol',
+            'brand' => 'Tenormin',
+            'category' => 'Tablet',
+            'quantity' => 40,
+            'discount' => 0,
+            'price' => 8000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Cefixime',
+            'brand' => 'Suprax',
+            'category' => 'Kapsul',
+            'quantity' => 25,
+            'discount' => 0.05,
+            'price' => 10000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Simvastatin',
+            'brand' => 'Zocor',
+            'category' => 'Tablet',
+            'quantity' => 30,
+            'discount' => 0,
+            'price' => 12000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Folic Acid',
+            'brand' => 'Folvite',
+            'category' => 'Tablet',
+            'quantity' => 40,
+            'discount' => 0,
+            'price' => 15000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Metoprolol',
+            'brand' => 'Lopressor',
+            'category' => 'Tablet',
+            'quantity' => 20,
+            'discount' => 0.05,
+            'price' => 10000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Azithromycin',
+            'brand' => 'Zithromax',
+            'category' => 'Kapsul',
+            'quantity' => 25,
+            'discount' => 0,
+            'price' => 12000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Bisoprolol',
+            'brand' => 'Concor',
+            'category' => 'Tablet',
+            'quantity' => 30,
+            'discount' => 0,
+            'price' => 10000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Lansoprazole',
+            'brand' => 'Prevacid',
+            'category' => 'Tablet',
+            'quantity' => 40,
+            'discount' => 0.1,
+            'price' => 12000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Sertraline',
+            'brand' => 'Zoloft',
+            'category' => 'Tablet',
+            'quantity' => 25,
+            'discount' => 0,
+            'price' => 10000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Methylphenidate',
+            'brand' => 'Ritalin',
+            'category' => 'Tablet',
+            'quantity' => 30,
+            'discount' => 0.1,
+            'price' => 15000,
+        ]);
+        
+        Medicine::create([
+            'name' => 'Esomeprazole',
+            'brand' => 'Nexium',
+            'category' => 'Tablet',
+            'quantity' => 35,
+            'discount' => 0,
+            'price' => 15000,
+        ]);        
     }
 }

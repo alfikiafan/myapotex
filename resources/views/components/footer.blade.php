@@ -8,22 +8,22 @@
                 document.write(new Date().getFullYear())
             </script>
             myApotex by
-            <a href="#" class="text-secondary" target="_blank">Apotex-Dev</a>.
+            <a href="#" class="text-secondary">Apotex-Dev</a>.
             </div>
         </div>
         <div class="col-lg-6">
             <ul class="nav nav-footer justify-content-center justify-content-lg-end">
             <li class="nav-item">
-                <a href="#" class="nav-link text-xs text-muted" target="_blank">Apotex-Dev</a>
+                <a href="#" class="nav-link text-xs text-muted">Apotex-Dev</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link text-xs text-muted" target="_blank">About Us</a>
+                <a href="#" class="nav-link text-xs text-muted">About Us</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link text-xs text-muted" target="_blank">Blog</a>
+                <a href="#" class="nav-link text-xs text-muted">Blog</a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link text-xs pe-0 text-muted" target="_blank">License</a>
+                <a href="#" class="nav-link text-xs pe-0 text-muted">License</a>
             </li>
             </ul>
         </div>
