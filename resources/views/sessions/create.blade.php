@@ -52,7 +52,6 @@
                             <div class="card-body">
                                 <form role="form" method="POST" action="/login">
                                     @csrf
-                                    <label>Name</label>
                                     <label>Email</label>
                                     <div class="mb-3">
                                         <input type="email" name="email" id="email" class="form-control"
