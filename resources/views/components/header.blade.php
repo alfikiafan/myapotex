@@ -5,7 +5,7 @@
     <nav>
     <h6>
         <span class="font-weight-bold mb-0">Welcome, User</span>
-        <span class="ms-5">Role: Admin</span>
+        <span class="ms-5">Role: Administrator</span>
     </h6>
     </nav>
     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
