@@ -30,13 +30,15 @@ class MedicineController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|min:3',
             'brand' => 'required',
             'category' => 'required',
-            'quantity' => 'required|integer',
-            'discount' => 'required|numeric',
-            'price' => 'required|numeric',
+            'quantity' => 'required|integer|min:0',
+            'discount' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
         ]);
+
+        $validatedData['discount'] = $validatedData['discount'] / 100;
 
         Medicine::create($validatedData);
 
@@ -55,7 +57,18 @@ class MedicineController extends Controller
 
     public function update(Request $request, Medicine $medicine)
     {
-        $medicine->update($request->all());
+        $validatedData = $request->validate([
+            'name' => 'required|min:3',
+            'brand' => 'required',
+            'category' => 'required',
+            'quantity' => 'required|integer|min:0',
+            'discount' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
+        ]);
+    
+        $validatedData['discount'] = $validatedData['discount'] / 100;
+    
+        $medicine->update($validatedData);
 
         return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully');
     }
