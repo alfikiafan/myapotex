@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container-fluid py-4 px-5">
+  {{-- if error to edit medicines --}}
+  @if ($errors->any())
+  <div class="alert alert-danger">
+    <ul class="mb-0">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+  </div>
+  @endif
   <div class="row">
     <div class="col-12">
       <div class="card border shadow-xs mb-4">

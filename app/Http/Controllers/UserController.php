@@ -40,9 +40,14 @@ class UserController extends Controller
             'joining_date' => 'required|date',
         ]);
 
-        User::create($request->all());
+        $success =  User::create($request->all());
 
-        return redirect()->route('accounts.index')->with('success', 'User created successfully');
+        if (!$success) {
+            return redirect()->route('accounts.index')->with('success', 'User add successfully');
+        }
+        else{
+            return redirect()->route('accounts.create')->withErrors('User failed to add');
+        }
     }
 
     public function edit(User $user)
@@ -59,9 +64,13 @@ class UserController extends Controller
             'role' => 'required',
         ]);
 
-        $user->update($request->all());
+        $success = $user->update($request->all());
 
-        return redirect()->route('accounts.index')->with('success', 'User updated successfully');
+        if ($success) {
+            return redirect()->route('accounts.index')->with('success', 'User updated successfully');
+        } else {
+            return redirect()->route('accounts.edit', $user->id)->withErrors('User failed to update');
+        }
     }
 
     public function destroy(User $user)

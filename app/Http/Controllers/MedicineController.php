@@ -40,9 +40,13 @@ class MedicineController extends Controller
 
         $validatedData['discount'] = $validatedData['discount'] / 100;
 
-        Medicine::create($validatedData);
+        $success = Medicine::create($validatedData);
 
-        return redirect()->route('medicines.index')->with('success', 'Obat berhasil ditambahkan');
+        if ($success) {
+            return redirect()->route('medicines.index')->with('success', 'Medicine add successfully');
+        } else {
+            return redirect()->route('medicines.create')->withErrors('Medicine failed to add');
+        }
     }
 
     public function create()
@@ -68,9 +72,13 @@ class MedicineController extends Controller
     
         $validatedData['discount'] = $validatedData['discount'] / 100;
     
-        $medicine->update($validatedData);
-
-        return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully');
+        $success = $medicine->update($validatedData);
+        
+        if ($success) {
+            return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully');
+        } else {
+            return redirect()->route('medicines.edit')->withErrors('Medicine failed to add');
+        }
     }
 
     public function destroy(Medicine $medicine)
