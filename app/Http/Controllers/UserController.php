@@ -43,10 +43,10 @@ class UserController extends Controller
         $success =  User::create($request->all());
 
         if (!$success) {
-            return redirect()->route('accounts.index')->with('success', 'User add successfully');
+            return redirect()->route('accounts.index')->with('success', 'User add successfully.');
         }
         else{
-            return redirect()->route('accounts.create')->withErrors('User failed to add');
+            return redirect()->route('accounts.create')->withErrors('User failed to add.');
         }
     }
 
@@ -67,9 +67,9 @@ class UserController extends Controller
         $success = $user->update($request->all());
 
         if ($success) {
-            return redirect()->route('accounts.index')->with('success', 'User updated successfully');
+            return redirect()->route('accounts.index')->with('success', 'User updated successfully.');
         } else {
-            return redirect()->route('accounts.edit', $user->id)->withErrors('User failed to update');
+            return redirect()->route('accounts.edit', $user->id)->withErrors('User failed to update.');
         }
     }
 
@@ -77,6 +77,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('accounts.index')->with('success', 'User deleted successfully');
+        return redirect()->route('accounts.index')->with('success', 'User deleted successfully.');
     }
 }
