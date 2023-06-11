@@ -43,9 +43,9 @@ class MedicineController extends Controller
         $success = Medicine::create($validatedData);
 
         if ($success) {
-            return redirect()->route('medicines.index')->with('success', 'Medicine add successfully');
+            return redirect()->route('medicines.index')->with('success', 'Medicine add successfully.');
         } else {
-            return redirect()->route('medicines.create')->withErrors('Medicine failed to add');
+            return redirect()->route('medicines.create')->withErrors('Medicine failed to add.');
         }
     }
 
@@ -75,9 +75,9 @@ class MedicineController extends Controller
         $success = $medicine->update($validatedData);
         
         if ($success) {
-            return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully');
+            return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully.');
         } else {
-            return redirect()->route('medicines.edit')->withErrors('Medicine failed to add');
+            return redirect()->route('medicines.edit')->withErrors('Medicine failed to add.');
         }
     }
 
