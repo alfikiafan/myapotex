@@ -2,6 +2,12 @@
 
 @section('content')
     <div class="container-fluid py-4 px-5">
+      {{-- if add or edit success --}}
+      @if(session('success'))
+      <div class="alert alert-success">
+        {{ session('success') }}
+      </div>
+      @endif
       <div class="row">
         <div class="col-12">
           <div class="card border shadow-xs mb-4">
