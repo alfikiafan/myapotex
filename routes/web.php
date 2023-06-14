@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// Rute Sementara
+// Rute sementara
 Route::get('/dashboard', function () {
     return redirect()->route('medicines.index');
 })->name('dashboard');
