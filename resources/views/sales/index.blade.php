@@ -87,8 +87,8 @@
             </div>
             <div class="row mt-2">
               <div class="col-md-12">
-                <button type="submit" class="btn btn-dark">Pay</button>
-                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-dark me-2">Pay</button>
+                <button type="button" class="btn btn-secondary me-2">Cancel</button>
                 <button type="button" class="btn btn-primary">Print Payment Receipt</button>
               </div>
             </div>

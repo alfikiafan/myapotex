@@ -49,6 +49,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
     });
 
+    // Rute Accounts
+    Route::middleware('cashier')->group(function () {
+        Route::get('/sales', function () {
+            return view('sales.index');
+        })->name('sales.index');
+    });
+
 });
 
 
@@ -56,10 +63,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/dashboard', function () {
     return redirect()->route('medicines.index');
 })->name('dashboard');
-
-Route::get('/sales', function () {
-    return redirect()->route('medicines.index');
-})->name('sales.index');
 
 Route::get('/logout', function () {
     return redirect()->route('medicines.index');
