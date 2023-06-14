@@ -17,9 +17,6 @@
                   </div>
                   <a href="{{ route('medicines.create') }}">
                     <button type="button" class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 me-2">
-                    <span class="btn-inner--icon me-2">
-                      <i class="fa-solid fa-plus" style="color: #000000;"></i>
-                    </span>
                       <span class="btn-inner--text">Reset‎ transaction</span>
                     </button>
                   </a>
@@ -68,6 +65,47 @@
                   </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="discount">Discount</label>
+                  <input type="number" name="discount" class="form-control" id="discount" value="" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="total">Total</label>
+                  <input type="number" name="total" class="form-control" id="total" value="" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-dark">Pay</button>
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="button" class="btn btn-primary">Print Payment Receipt</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="cash">Cash</label>
+                  <input type="number" name="cash" class="form-control" id="cash" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="change">Change</label>
+                  <input type="number" name="change" class="form-control" id="change" value="" readonly>
+                </div>
               </div>
             </div>
           </div>
