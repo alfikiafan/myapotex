@@ -51,14 +51,23 @@ Route::get('/accounts/{user}/edit', [UserController::class, 'edit'])->name('acco
 Route::put('/accounts/{user}', [UserController::class, 'update'])->name('accounts.update');
 Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
 
+// Rute Sales sementara
+
+Route::get('/sales', function () {
+    return view('sales.index');
+})->name('sales.index');
+
+// Route::get('/sales', [UserController::class, 'index'])->name('sales.index');
+// Route::post('/sales', [UserController::class, 'store'])->name('sales.store');
+// Route::get('/sales/create', [UserController::class, 'create'])->name('sales.create');
+// Route::get('/sales/{user}/edit', [UserController::class, 'edit'])->name('sales.edit');
+// Route::put('/sales/{user}', [UserController::class, 'update'])->name('sales.update');
+// Route::delete('/sales/{user}', [UserController::class, 'destroy'])->name('sales.destroy');
+
 // Rute Sementara
 Route::get('/dashboard', function () {
     return redirect()->route('medicines.index');
 })->name('dashboard');
-
-Route::get('/sales', function () {
-    return redirect()->route('medicines.index');
-})->name('sales.index');
 
 Route::get('/logout', function () {
     return redirect()->route('medicines.index');
