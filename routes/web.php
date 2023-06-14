@@ -51,7 +51,7 @@ Route::get('/accounts/{user}/edit', [UserController::class, 'edit'])->name('acco
 Route::put('/accounts/{user}', [UserController::class, 'update'])->name('accounts.update');
 Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
 
-// Rute Sementara
+// Rute sementara
 Route::get('/dashboard', function () {
     return redirect()->route('medicines.index');
 })->name('dashboard');
