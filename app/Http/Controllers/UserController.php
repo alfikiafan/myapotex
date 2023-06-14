@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $search = $request->input('search');
-    
+
         if ($search) {
             $users = User::where('id', 'like', "%$search%")
                 ->orWhere('name', 'like', "%$search%")
@@ -21,16 +23,16 @@ class UserController extends Controller
         } else {
             $users = User::paginate(8);
         }
-    
+
         return view('accounts.index', compact('users'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('accounts.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -50,12 +52,12 @@ class UserController extends Controller
         }
     }
 
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         return view('accounts.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -73,7 +75,7 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $user->delete();
 

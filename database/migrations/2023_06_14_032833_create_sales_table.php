@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medicines', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('name');
-            $table->string('brand');
-            $table->string('category');
-            $table->unsignedInteger('quantity');
-            $table->decimal('discount', 5, 2);
-            $table->decimal('price', 8, 2);
+            $table->string('cashier_id')->nullable();
+            $table->foreign('cashier_id')->references('id')->on('users');
+            $table->date('date');
+            $table->time('time');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('medicines');
+        Schema::dropIfExists('sales');
     }
 };
