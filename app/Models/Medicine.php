@@ -38,4 +38,10 @@ class Medicine extends Model
         'discount',
         'price',
     ];
+
+    // eloquent relationship with detail_sale
+    public function detailSales()
+    {
+        return $this->hasMany(DetailSale::class, 'medicine_id', 'id');
+    }
 }

@@ -71,4 +71,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // eloquent relationship with sale
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'cashier_id', 'id');
+    }
 }
