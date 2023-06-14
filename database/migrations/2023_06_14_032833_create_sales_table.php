@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('cashier_id')->nullable()->constrained(table: 'users');
-            $table->date('date')->format('d-m-Y');
-            $table->time('time')->format('H:i:s');
+            $table->string('id')->primary();
+            $table->string('cashier_id')->nullable();
+            $table->foreign('cashier_id')->references('id')->on('users');
+            $table->date('date');
+            $table->time('time');
             $table->timestamps();
         });
     }
