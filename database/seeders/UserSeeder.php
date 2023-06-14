@@ -10,7 +10,7 @@ class UserSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
         $adminCount = 3;
         $cashierCount = 5;

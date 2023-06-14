@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicine;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class MedicineController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $search = $request->input('search');
-    
+
         if ($search) {
             $medicines = Medicine::where('id', 'like', "%$search%")
                 ->orWhere('name', 'like', "%$search%")
@@ -23,11 +25,11 @@ class MedicineController extends Controller
         } else {
             $medicines = Medicine::paginate(8);
         }
-    
+
         return view('medicines.index', compact('medicines'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required',
@@ -49,17 +51,17 @@ class MedicineController extends Controller
         }
     }
 
-    public function create()
+    public function create(): View
     {
         return view('medicines.create');
     }
 
-    public function edit(Medicine $medicine)
+    public function edit(Medicine $medicine): View
     {
         return view('medicines.edit', compact('medicine'));
     }
 
-    public function update(Request $request, Medicine $medicine)
+    public function update(Request $request, Medicine $medicine): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => 'required',
@@ -69,11 +71,11 @@ class MedicineController extends Controller
             'discount' => 'required|numeric|min:0',
             'price' => 'required|numeric|min:0',
         ]);
-    
+
         $validatedData['discount'] = $validatedData['discount'] / 100;
-    
+
         $success = $medicine->update($validatedData);
-        
+
         if ($success) {
             return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully.');
         } else {
@@ -81,11 +83,10 @@ class MedicineController extends Controller
         }
     }
 
-    public function destroy(Medicine $medicine)
+    public function destroy(Medicine $medicine) :RedirectResponse
     {
         $medicine->delete();
 
         return redirect()->route('medicines.index')->with('success', 'Medicine has been deleted.');
     }
 }
-
