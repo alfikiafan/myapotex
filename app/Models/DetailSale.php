@@ -12,12 +12,14 @@ class DetailSale extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
         static::creating(function ($detailSale) {
-            $detailSale->id = 'DS' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+            if (!$detailSale->id) {
+                $detailSale->id = 'DS' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+            }
         });
     }
 
