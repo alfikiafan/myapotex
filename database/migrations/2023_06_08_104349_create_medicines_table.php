@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('discount', 5, 2);
             $table->decimal('price', 8, 2);
             $table->timestamps();
-            $table->deleted_at();
+            $table->softDeletes();
         });
     }
 
