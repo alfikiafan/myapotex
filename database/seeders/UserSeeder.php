@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminCount = 3;
+        $adminCount = 2;
         $cashierCount = 5;
 
         User::factory()->count($adminCount)->create(['role' => 'administrator']);
