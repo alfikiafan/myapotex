@@ -2,6 +2,12 @@
 
 @section('content')
     <div class="container-fluid py-4 px-5">
+      {{-- if add or edit success --}}
+      @if(session('success'))
+      <div class="alert alert-success">
+        {{ session('success') }}
+      </div>
+      @endif
       <div class="row">
         <div class="col-12">
           <div class="card border shadow-xs mb-4">
@@ -68,7 +74,7 @@
                         <form action="{{ route('medicines.destroy', $medicine->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm mb-0 ms-1 btn-danger">
+                            <button type="submit" class="btn btn-sm mb-0 ms-1 btn-danger" onclick="return confirm('Are you sure to delete this medicine?')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
