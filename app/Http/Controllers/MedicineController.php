@@ -88,4 +88,3 @@ class MedicineController extends Controller
         return redirect()->route('medicines.index')->with('success', 'Medicine has been deleted.');
     }
 }
-
