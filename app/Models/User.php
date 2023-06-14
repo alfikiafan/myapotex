@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method static create(array $all)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -16,7 +19,7 @@ class User extends Authenticatable
     protected $primaryKey = 'id';
     public $incrementing = false;
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -25,7 +28,7 @@ class User extends Authenticatable
         });
     }
 
-    protected static function maxIdNumber()
+    protected static function maxIdNumber(): int
     {
         $maxId = static::max('id');
         if ($maxId) {
@@ -34,11 +37,11 @@ class User extends Authenticatable
         return 0;
     }
 
-    public function getJoiningDateAttribute($value)
+    public function getJoiningDateAttribute($value): string
     {
         return Carbon::createFromFormat('Y-m-d', $value)->format('d-m-Y');
     }
-    
+
     /**
      * The attributes that are mass assignable.
      *
