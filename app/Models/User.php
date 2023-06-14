@@ -24,13 +24,15 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user) {
-            $user->id = 'U' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+            if (!$user->id) {
+                $user->id = 'U' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+            }
         });
     }
 
     protected static function maxIdNumber(): int
     {
-        $maxId = static::max('id');
+        $maxId = static::withTrashed()->max('id');
         if ($maxId) {
             return intval(substr($maxId, 1));
         }
