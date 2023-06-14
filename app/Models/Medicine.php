@@ -21,13 +21,15 @@ class Medicine extends Model
         parent::boot();
 
         static::creating(function ($medicine) {
-            $medicine->id = 'M' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+            if (!$medicine->id) {
+                $medicine->id = 'M' . str_pad(static::maxIdNumber() + 1, 4, '0', STR_PAD_LEFT);
+            }
         });
     }
 
     protected static function maxIdNumber(): int
     {
-        $maxId = static::max('id');
+        $maxId = static::withTrashed()->max('id');
         if ($maxId) {
             return intval(substr($maxId, 1));
         }
