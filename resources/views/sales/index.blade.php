@@ -256,12 +256,8 @@
                     newRow.find('td:nth-child(5)').text(ui.item.discount);
                     newRow.find('td:nth-child(6)').text(ui.item.price);
                     updateSubtotal(newRow);
-                }
-            }).on("keyup", function () {
-                const input = $(this);
-                if (input.val().length >= 3) {
-                    input.autocomplete("search", input.val());
-                }
+                },
+                autofocus: true
             });
 
             newRow.find('input[name="quantity[]"]').on('input', function () {
