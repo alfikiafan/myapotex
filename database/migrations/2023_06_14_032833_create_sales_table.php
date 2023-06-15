@@ -15,8 +15,10 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->string('cashier_id')->nullable();
             $table->foreign('cashier_id')->references('id')->on('users');
-            $table->date('date');
-            $table->time('time');
+            $table->unsignedInteger('discount')->nullable();
+            $table->decimal('total', 12, 2);
+            $table->decimal('cash', 12, 2);
+            $table->decimal('change', 12, 2);
             $table->timestamps();
         });
     }
