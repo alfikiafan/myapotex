@@ -48,7 +48,7 @@
                                 @foreach($sales as $sale)
                                     @foreach($sale->detailSales as $index => $detailSale)
                                         <tr>
-                                            <td class="ps-4">{{ $index + 1 }}</td>
+                                            <td class="ps-4 row-number">{{ $index + 1 }}</td>
                                             <td>{{ $detailSale->medicine->id }}</td>
                                             <td>
                                                 <select name="medicine_id[]" class="form-control">
@@ -76,7 +76,7 @@
                                     <td class="ps-4"></td>
                                     <td></td>
                                     <td>
-                                    <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
+                                        <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
                                     </td>
                                     <td>
                                         <input type="number" name="quantity[]" class="form-control" required>
@@ -91,7 +91,6 @@
                                     </td>
                                 </tr>
                             </tbody>
-
                         </table>
                     </div>
                 </div>
@@ -115,7 +114,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-dark me-2">Pay</button>
+                        <button type="submit" id="pay-btn" class="btn btn-dark me-2">Pay</button>
                         <button type="button" class="btn btn-secondary me-2">Cancel</button>
                         <button type="button" class="btn btn-primary">Print Payment Receipt</button>
                     </div>
@@ -141,70 +140,137 @@
     </div>
 </div>
 <script>
-    $(document).ready(function () {
-        // Add Item Button
-        $('#add-item-btn').click(function () {
-            var newRow = $('#new-row').clone().removeAttr('id').show();
-            newRow.find('td:first').text($('#items-container tr').length);
-            newRow.find('input[name="medicine_name[]"]').autocomplete({
-                source: function(request, response) {
-                    $.ajax({
-                        url: '{{ route("sales.search") }}',
-                        dataType: 'json',
-                        data: {
-                            q: request.term
-                        },
-                        success: function(data) {
-                            response(data);
-                        }
-                    });
-                },
-                minLength: 3,
-                select: function(event, ui) {
-                    newRow.find('input[name="medicine_name[]"]').val(ui.item.label);
-                    newRow.find('input[name="medicine_name[]"]').attr('data-id', ui.item.id);
-                    newRow.find('input[name="medicine_name[]"]').attr('data-discount', ui.item.discount);
-                    newRow.find('input[name="medicine_name[]"]').attr('data-price', ui.item.price);
-                    newRow.find('td:nth-child(2)').text(ui.item.id);
-                    newRow.find('td:nth-child(5)').text(ui.item.discount);
-                    newRow.find('td:nth-child(6)').text(ui.item.price);
-                    updateSubtotal(newRow);
-                }
-            }).on("keyup", function () {
-                var input = $(this);
-                if (input.val().length >= 3) {
-                input.autocomplete("search", input.val());
-                }
-            });
+$(document).ready(function () {
+    $('#pay-btn').click(function () {
+        // Mengambil data transaksi dari form
+        var cash = $('#cash').val();
+        
+        // Mengirim data transaksi ke server menggunakan AJAX
+        $.ajax({
+            url: '{{ route("sales.store") }}',
+            method: 'POST',
+            data: {
+                cash: cash
+            },
+            success: function (response) {
+                // Mengupdate halaman atau menampilkan pesan sukses
+                alert('Transaction added successfully!');
+                location.reload();
+            },
+            error: function (error) {
+                alert('Failed to add transaction. Please try again.');
+            }
+        });
+    });
 
-            newRow.find('input[name="quantity[]"]').on('input', function() {
+    // Add Item Button
+    $('#add-item-btn').click(function () {
+        var newRow = $('#new-row').clone().removeAttr('id').show();
+        newRow.find('td:first').text($('#items-container tr').length+1);
+        newRow.find('input[name="medicine_name[]"]').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '{{ route("sales.search") }}',
+                    dataType: 'json',
+                    data: {
+                        q: request.term
+                    },
+                    success: function (data) {
+                        response(data);
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                newRow.find('input[name="medicine_name[]"]').val(ui.item.label);
+                newRow.find('input[name="medicine_name[]"]').attr('data-id', ui.item.id);
+                newRow.find('input[name="medicine_name[]"]').attr('data-discount', ui.item.discount);
+                newRow.find('input[name="medicine_name[]"]').attr('data-price', ui.item.price);
+                newRow.find('td:nth-child(2)').text(ui.item.id);
+                newRow.find('td:nth-child(5)').text(ui.item.discount);
+                newRow.find('td:nth-child(6)').text(ui.item.price);
                 updateSubtotal(newRow);
-            });
-            $('#items-container').append(newRow);
+            }
+        }).on("keyup", function () {
+            var input = $(this);
+            if (input.val().length >= 3) {
+                input.autocomplete("search", input.val());
+            }
         });
 
-        // Delete Row Button
-        $(document).on('click', '.delete-row', function () {
+        newRow.find('input[name="quantity[]"]').on('input', function () {
+            updateSubtotal(newRow);
+        });
+        newRow.find('.delete-row').click(function () {
             $(this).closest('tr').remove();
             updateRowNumbers();
         });
 
-        // Update row numbers
-        function updateRowNumbers() {
-            $('#items-container tr').each(function (index) {
-                $(this).find('td:first').text(index + 1);
-            });
-        }
+        $('#items-container').append(newRow);
+        updateRowNumbers();
+    });
 
-        // Update Subtotal
-        function updateSubtotal(row) {
-            var quantity = row.find('input[name="quantity[]"]').val();
-            var discount = row.find('td:nth-child(5)').text();
-            var price = row.find('td:nth-child(6)').text();
-            var subtotal = quantity * price * (1 - discount);
-            row.find('td:nth-child(7)').text(subtotal);
+    // Delete Row Button
+    $(document).on('click', '.delete-row', function () {
+        $(this).closest('tr').remove();
+        updateRowNumbers();
+    });
+
+    // Add Row on Enter
+    $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            addRow();
         }
     });
+
+    // Update row numbers
+    function updateRowNumbers() {
+        $('#items-container tr').each(function (index) {
+            $(this).find('td:first').text(index + 1);
+        });
+    }
+
+    // Update Subtotal
+    function updateSubtotal(row) {
+        var quantity = row.find('input[name="quantity[]"]').val();
+        var discount = row.find('input[name="medicine_name[]"]').data('discount');
+        var price = row.find('input[name="medicine_name[]"]').data('price');
+        var subtotal = quantity * price * (1 - discount);
+        row.find('td:nth-child(7)').text(subtotal);
+    }
+
+    $(document).on('input', 'input[name="quantity[]"]', function() {
+        // Menghitung discount dan total
+        var discount = 0;
+        var total = 0;
+        $('#items-container tr').each(function () {
+            var quantity = $(this).find('input[name="quantity[]"]').val();
+            var price = $(this).find('input[name="medicine_name[]"]').data('price');
+            var itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
+            var subtotal = quantity * price * (1 - itemDiscount);
+            
+            discount += itemDiscount * price * quantity;
+            total += subtotal;
+        });
+        
+        // Update nilai pada input field discount dan total
+        $('#discount').val(discount);
+        $('#total').val(total);
+    });
+    
+    $('#cash').on('input', function() {
+        // Mengambil data transaksi dari form
+        var cash = $(this).val();
+        
+        // Menghitung kembalian
+        var total = parseFloat($('#total').val());
+        var change = cash - total;
+        
+        // Update nilai pada input field change
+        $('#change').val(change);
+    });
+});
 </script>
 
 @endsection

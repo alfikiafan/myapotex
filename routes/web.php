@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('cashier')->group(function () {
         Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
         Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
+        Route::post('/sales/add', [SaleController::class, 'store'])->name('sales.store');
+        Route::put('/sales/{id}', [SaleController::class, 'update'])->name('sales.update');
     });
 
     // Rute Profile

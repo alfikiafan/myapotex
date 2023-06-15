@@ -23,9 +23,11 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi inputan form sale
+        // Validasi inputan form
         $request->validate([
-            'medicine_id.*' => 'required',
+            'cash' => 'required|numeric|min:0',
+            'medicine_id' => 'required|array',
+            'quantity' => 'required|array',
             'quantity.*' => 'required|numeric|min:1',
         ]);
 
@@ -46,14 +48,7 @@ class SaleController extends Controller
             ]);
         }
 
-        return redirect()->route('sales.index')->with('success', 'Sale created successfully.');
-    }
-
-    public function edit($id)
-    {
-        $sale = Sale::findOrFail($id);
-        $medicines = Medicine::all();
-        return view('sales.edit', compact('sale', 'medicines'));
+        return response()->json(['success' => true]);
     }
 
     public function update(Request $request, $id)
@@ -67,13 +62,27 @@ class SaleController extends Controller
         // Cari sale berdasarkan ID
         $sale = Sale::findOrFail($id);
 
-        // Update detail sale yang ada
-        $sale->detailSales()->update([
-            'medicine_id' => $request->input('medicine_id'),
-            'quantity' => $request->input('quantity'),
-        ]);
+        // Hapus semua detail sale terkait sebelum melakukan update
+        $sale->detailSales()->delete();
 
-        return redirect()->route('sales.index')->with('success', 'Sale updated successfully.');
+        // Looping untuk menyimpan detail sales yang diperbarui
+        foreach ($request->input('medicine_id') as $index => $medicineId) {
+            $quantity = $request->input('quantity')[$index];
+
+            $sale->detailSales()->create([
+                'medicine_id' => $medicineId,
+                'quantity' => $quantity,
+            ]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function edit($id)
+    {
+        $sale = Sale::findOrFail($id);
+        $medicines = Medicine::all();
+        return view('sales.edit', compact('sale', 'medicines'));
     }
 
     public function search(Request $request)
