@@ -140,137 +140,183 @@
     </div>
 </div>
 <script>
-$(document).ready(function () {
-    $('#pay-btn').click(function () {
-        // Mengambil data transaksi dari form
-        var cash = $('#cash').val();
-        
-        // Mengirim data transaksi ke server menggunakan AJAX
-        $.ajax({
-            url: '{{ route("sales.store") }}',
-            method: 'POST',
-            data: {
-                cash: cash
-            },
-            success: function (response) {
-                // Mengupdate halaman atau menampilkan pesan sukses
-                alert('Transaction added successfully!');
-                location.reload();
-            },
-            error: function (error) {
-                alert('Failed to add transaction. Please try again.');
-            }
-        });
-    });
+    $(document).ready(function () {
+        // Add Item Button
+        $('#add-item-btn').click(function () {
+            var newRow = $('#new-row').clone().removeAttr('id').show();
+            newRow.find('td:first').text($('#items-container tr').length + 1);
+            newRow.find('input[name="medicine_name[]"]').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '{{ route("sales.search") }}',
+                        dataType: 'json',
+                        data: {
+                            q: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function (event, ui) {
+                    newRow.find('input[name="medicine_name[]"]').val(ui.item.label);
+                    newRow.find('input[name="medicine_name[]"]').attr('data-id', ui.item.id);
+                    newRow.find('input[name="medicine_name[]"]').attr('data-discount', ui.item.discount);
+                    newRow.find('input[name="medicine_name[]"]').attr('data-price', ui.item.price);
+                    newRow.find('td:nth-child(2)').text(ui.item.id);
+                    newRow.find('td:nth-child(5)').text(ui.item.discount);
+                    newRow.find('td:nth-child(6)').text(ui.item.price);
+                    updateSubtotal(newRow);
+                }
+            }).on("keyup", function () {
+                var input = $(this);
+                if (input.val().length >= 3) {
+                    input.autocomplete("search", input.val());
+                }
+            });
 
-    // Add Item Button
-    $('#add-item-btn').click(function () {
-        var newRow = $('#new-row').clone().removeAttr('id').show();
-        newRow.find('td:first').text($('#items-container tr').length+1);
-        newRow.find('input[name="medicine_name[]"]').autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '{{ route("sales.search") }}',
-                    dataType: 'json',
-                    data: {
-                        q: request.term
-                    },
-                    success: function (data) {
-                        response(data);
-                    }
-                });
-            },
-            minLength: 3,
-            select: function (event, ui) {
-                newRow.find('input[name="medicine_name[]"]').val(ui.item.label);
-                newRow.find('input[name="medicine_name[]"]').attr('data-id', ui.item.id);
-                newRow.find('input[name="medicine_name[]"]').attr('data-discount', ui.item.discount);
-                newRow.find('input[name="medicine_name[]"]').attr('data-price', ui.item.price);
-                newRow.find('td:nth-child(2)').text(ui.item.id);
-                newRow.find('td:nth-child(5)').text(ui.item.discount);
-                newRow.find('td:nth-child(6)').text(ui.item.price);
+            newRow.find('input[name="quantity[]"]').on('input', function () {
                 updateSubtotal(newRow);
-            }
-        }).on("keyup", function () {
-            var input = $(this);
-            if (input.val().length >= 3) {
-                input.autocomplete("search", input.val());
-            }
+            });
+            newRow.find('.delete-row').click(function () {
+                $(this).closest('tr').remove();
+                updateRowNumbers();
+            });
+
+            $('#items-container').append(newRow);
+            updateRowNumbers();
         });
 
-        newRow.find('input[name="quantity[]"]').on('input', function () {
-            updateSubtotal(newRow);
-        });
-        newRow.find('.delete-row').click(function () {
+        // Delete Row Button
+        $(document).on('click', '.delete-row', function () {
             $(this).closest('tr').remove();
             updateRowNumbers();
         });
 
-        $('#items-container').append(newRow);
-        updateRowNumbers();
-    });
+        // Add Row on Enter
+        $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                $('#add-item-btn').click();
+            }
+        });
 
-    // Delete Row Button
-    $(document).on('click', '.delete-row', function () {
-        $(this).closest('tr').remove();
-        updateRowNumbers();
-    });
+        // Update row numbers
+        function updateRowNumbers() {
+            $('#items-container tr').each(function (index) {
+                $(this).find('td:first').text(index + 1);
+            });
+        }
 
-    // Add Row on Enter
-    $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            addRow();
+        // Update Subtotal
+        function updateSubtotal(row) {
+            var quantity = row.find('input[name="quantity[]"]').val();
+            var discount = row.find('input[name="medicine_name[]"]').data('discount');
+            var price = row.find('input[name="medicine_name[]"]').data('price');
+            var subtotal = quantity * price * (1 - discount);
+            row.find('td:nth-child(7)').text(subtotal);
+        }
+
+        $(document).on('input', 'input[name="quantity[]"]', function () {
+            // Menghitung discount dan total
+            var discount = 0;
+            var total = 0;
+            $('#items-container tr').each(function () {
+                var quantity = $(this).find('input[name="quantity[]"]').val();
+                var price = $(this).find('input[name="medicine_name[]"]').data('price');
+                var itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
+                var subtotal = quantity * price * (1 - itemDiscount);
+                total += subtotal;
+                discount += quantity * price * itemDiscount;
+            });
+
+            // Mengupdate nilai discount dan total
+            $('#discount').val(discount);
+            $('#total').val(total);
+        });
+
+        // Menghitung kembalian
+        $(document).on('input', '#cash', function () {
+            var cash = $(this).val();
+            var total = parseFloat($('#total').val());
+            var change = cash - total;
+
+            $('#change').val(change);
+        });
+
+        $('#pay-btn').click(function () {
+    // Mengambil data transaksi dari form
+    var cash = $('#cash').val();
+
+    // Membuat objek FormData dari form
+    var formData = new FormData();
+    formData.append('cash', cash);
+    formData.append('discount', $('#discount').val());
+    formData.append('total', $('#total').val());
+    formData.append('change', $('#change').val());
+
+    // Mengirim data penjualan ke server menggunakan AJAX
+    $.ajax({
+        url: '{{ route("sales.store") }}',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            // Mengambil ID penjualan dari respons
+            var saleId = response.sale_id;
+
+            // Mengambil data detail penjualan dari form
+            var medicineIds = $('.medicine-id').map(function () {
+                return $(this).val();
+            }).get();
+            var quantities = $('.quantity').map(function () {
+                return $(this).val();
+            }).get();
+            var prices = $('.price').map(function () {
+                return $(this).val();
+            }).get();
+            var discounts = $('.discount').map(function () {
+                return $(this).val();
+            }).get();
+            var subtotals = $('.subtotal').map(function () {
+                return $(this).val();
+            }).get();
+
+            // Membuat objek FormData untuk data detail penjualan
+            var detailFormData = new FormData();
+            detailFormData.append('sale_id', saleId);
+            for (var i = 0; i < medicineIds.length; i++) {
+                detailFormData.append('medicine_id[]', medicineIds[i]);
+                detailFormData.append('quantity[]', quantities[i]);
+                detailFormData.append('price[]', prices[i]);
+                detailFormData.append('discount[]', discounts[i]);
+                detailFormData.append('subtotal[]', subtotals[i]);
+            }
+
+            // Mengirim data detail penjualan ke server menggunakan AJAX
+            $.ajax({
+                url: '{{ route("detailsales.store", ":sale_id") }}'.replace(':sale_id', saleId),
+                method: 'POST',
+                data: detailFormData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    // Mengupdate halaman atau menampilkan pesan sukses
+                    alert('Transaction details added successfully!');
+                    location.reload();
+                },
+                error: function (error) {
+                    alert('Failed to add transaction details. Please try again.');
+                }
+            });
+        },
+        error: function (error) {
+            alert('Failed to add transaction. Please try again.');
         }
     });
-
-    // Update row numbers
-    function updateRowNumbers() {
-        $('#items-container tr').each(function (index) {
-            $(this).find('td:first').text(index + 1);
-        });
-    }
-
-    // Update Subtotal
-    function updateSubtotal(row) {
-        var quantity = row.find('input[name="quantity[]"]').val();
-        var discount = row.find('input[name="medicine_name[]"]').data('discount');
-        var price = row.find('input[name="medicine_name[]"]').data('price');
-        var subtotal = quantity * price * (1 - discount);
-        row.find('td:nth-child(7)').text(subtotal);
-    }
-
-    $(document).on('input', 'input[name="quantity[]"]', function() {
-        // Menghitung discount dan total
-        var discount = 0;
-        var total = 0;
-        $('#items-container tr').each(function () {
-            var quantity = $(this).find('input[name="quantity[]"]').val();
-            var price = $(this).find('input[name="medicine_name[]"]').data('price');
-            var itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
-            var subtotal = quantity * price * (1 - itemDiscount);
-            
-            discount += itemDiscount * price * quantity;
-            total += subtotal;
-        });
-        
-        // Update nilai pada input field discount dan total
-        $('#discount').val(discount);
-        $('#total').val(total);
-    });
-    
-    $('#cash').on('input', function() {
-        // Mengambil data transaksi dari form
-        var cash = $(this).val();
-        
-        // Menghitung kembalian
-        var total = parseFloat($('#total').val());
-        var change = cash - total;
-        
-        // Update nilai pada input field change
-        $('#change').val(change);
-    });
 });
+    });
 </script>
-
 @endsection

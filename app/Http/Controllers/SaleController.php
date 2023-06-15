@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Medicine;
+use App\Models\DetailSale;
+
 
 class SaleController extends Controller
 {
@@ -23,32 +25,17 @@ class SaleController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi inputan form
-        $request->validate([
-            'cash' => 'required|numeric|min:0',
-            'medicine_id' => 'required|array',
-            'quantity' => 'required|array',
-            'quantity.*' => 'required|numeric|min:1',
-        ]);
-
-        // Buat objek sale baru
+        // Buat penjualan baru
         $sale = new Sale();
         $sale->cashier_id = auth()->user()->id;
-        $sale->date = now()->format('Y-m-d');
-        $sale->time = now()->format('H:i:s');
+        $sale->discount = $request->input('discount');
+        $sale->total = $request->input('total');
+        $sale->cash = $request->input('cash');
+        $sale->change = $request->input('change');
         $sale->save();
-
-        // Looping untuk menyimpan detail sales
-        foreach ($request->input('medicine_id') as $index => $medicineId) {
-            $quantity = $request->input('quantity')[$index];
-
-            $sale->detailSales()->create([
-                'medicine_id' => $medicineId,
-                'quantity' => $quantity,
-            ]);
-        }
-
-        return response()->json(['success' => true]);
+    
+        // Kirim respon dengan ID penjualan yang berhasil dibuat
+        return response()->json(['sale_id' => $sale->id]);
     }
 
     public function update(Request $request, $id)
