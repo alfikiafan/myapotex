@@ -4,6 +4,7 @@ use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,11 +50,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
     });
 
-    // Rute Accounts
+    // Rute sell
     Route::middleware('cashier')->group(function () {
-        Route::get('/sales', function () {
-            return view('sales.index');
-        })->name('sales.index');
+        Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+        Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
     });
 
     // Rute Profile

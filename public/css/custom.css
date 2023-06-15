@@ -1,0 +1,17 @@
+.ui-autocomplete {
+  background-color: white;
+  font-size: 0.875em;
+  list-style-type: none;
+  padding: 0;
+  width: fit-content !important;
+  overflow-x: hidden;
+}
+
+.ui-autocomplete li {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.ui-autocomplete li:hover {
+  background-color: #e5e5e5;
+}
