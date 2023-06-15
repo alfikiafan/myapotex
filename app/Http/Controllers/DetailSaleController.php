@@ -17,7 +17,7 @@ class DetailSaleController extends Controller
         $prices = $request->input('price');
         $discounts = $request->input('discount');
         $subtotals = $request->input('subtotal');
-    
+
         // Simpan setiap detail penjualan
         for ($i = 0; $i < count($medicineIds); $i++) {
             $detailSale = new DetailSale();
@@ -27,9 +27,10 @@ class DetailSaleController extends Controller
             $detailSale->price = $prices[$i];
             $detailSale->discount = $discounts[$i];
             $detailSale->subtotal = $subtotals[$i];
+
             $detailSale->save();
         }
-    
+
         // Kirim respon sukses
         return response()->json(['message' => 'Transaction details added successfully!']);
     }
