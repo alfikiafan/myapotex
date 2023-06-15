@@ -72,25 +72,26 @@
                                         </tr>
                                     @endforeach
                                 @endforeach
-                                <tr id="new-row" style="display: none;">
-                                    <td class="ps-4"></td>
-                                    <td></td>
-                                    <td>
-                                        <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="quantity[]" class="form-control" required>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-danger delete-row">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+
                             </tbody>
+                            <tr id="new-row" style="display: none;">
+                                <td class="ps-4"></td>
+                                <td></td>
+                                <td>
+                                    <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
+                                </td>
+                                <td>
+                                    <input type="number" name="quantity[]" class="form-control" required>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-danger delete-row">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -258,6 +259,13 @@
             formData.append('discount', discount);
             formData.append('total', total);
             formData.append('change', change);
+
+            // Setup CSRF
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
             // Mengirim data penjualan ke server menggunakan AJAX
             $.ajax({
