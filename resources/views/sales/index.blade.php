@@ -13,7 +13,7 @@
                         </div>
                         <div class="ms-auto d-flex">
                             <div class="me-4">
-                                <h6 class="font-weight-semibold text-m mb-0">ID Transaction: T0001</h6>
+                                <h6 class="font-weight-semibold text-m mb-0">ID Transaction: <span id="newId"></span></h6>
                             </div>
                             <a href="">
                                 <button type="button" id="reset-transaction-btn" class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 me-2">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body px-0 py-0">
+                <div id="print" class="card-body px-0 py-0">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
                             <thead class="bg-gray-100">
@@ -54,7 +54,7 @@
                                     <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
                                 </td>
                                 <td>
-                                    <input type="number" name="quantity[]" class="quantity form-control" required>
+                                    <input type="number" name="quantity[]" class="quantity form-control" min="0" required>
                                 </td>
                                 <td class="discount"></td>
                                 <td class="price"></td>
@@ -72,7 +72,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="row">
+                <div id="print-2" class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="discount">Discount</label>
@@ -90,12 +90,12 @@
                     <div class="col-md-12">
                         <button type="submit" id="pay-btn" class="btn btn-dark me-2">Pay</button>
                         <button type="button" class="btn btn-secondary me-2">Cancel</button>
-                        <button type="button" class="btn btn-primary">Print Payment Receipt</button>
+                        <button type="button" id="print-btn" class="btn btn-primary" onclick="window.print();return false;">Print Payment Receipt</button>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="row">
+                <div id="print-3" class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="cash">Cash</label>
@@ -115,6 +115,13 @@
 </div>
 <script>
     $(document).ready(function () {
+        // Nilai ID
+        const lastId = "{{ $sales->max('id') }}";
+        const lastIdNumber = parseInt(lastId.substr(1));
+        const newIdNumber = lastIdNumber + 1;
+        const newId = `S${newIdNumber.toString().padStart(3, "0")}`;
+        document.getElementById('newId').textContent = newId;
+
         // Add Item Button
         $('#add-item-btn').click(function () {
             const newRow = $('#new-row').clone().removeAttr('id').show();
