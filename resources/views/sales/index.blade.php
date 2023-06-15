@@ -226,6 +226,12 @@
             const total = $('#total').val();
             const change = $('#change').val();
 
+            // Validasi jika cash < total
+            if (Number(cash) < Number(total)) {
+                alert('Insufficient cash amount. Please enter a higher value.');
+                return; // Menghentikan eksekusi fungsi jika kondisi tidak terpenuhi
+            }
+
             // Membuat objek FormData dari form
             const formData = new FormData();
             formData.append('cash', cash);
