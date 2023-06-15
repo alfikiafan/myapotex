@@ -144,7 +144,7 @@
         // Add Item Button
         $('#add-item-btn').click(function () {
             var newRow = $('#new-row').clone().removeAttr('id').show();
-            newRow.find('td:first').text($('#items-container tr').length + 1);
+            newRow.find('td:first').text($('#items-container tr').length-1);
             newRow.find('input[name="medicine_name[]"]').autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -246,77 +246,80 @@
         });
 
         $('#pay-btn').click(function () {
-    // Mengambil data transaksi dari form
-    var cash = $('#cash').val();
+            // Mengambil data transaksi dari form
+            var cash = $('#cash').val();
+            var discount = $('#discount').val()
+            var total = $('#total').val();
+            var change = $('#change').val();
 
-    // Membuat objek FormData dari form
-    var formData = new FormData();
-    formData.append('cash', cash);
-    formData.append('discount', $('#discount').val());
-    formData.append('total', $('#total').val());
-    formData.append('change', $('#change').val());
+            // Membuat objek FormData dari form
+            var formData = new FormData();
+            formData.append('cash', cash);
+            formData.append('discount', discount);
+            formData.append('total', total);
+            formData.append('change', change);
 
-    // Mengirim data penjualan ke server menggunakan AJAX
-    $.ajax({
-        url: '{{ route("sales.store") }}',
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            // Mengambil ID penjualan dari respons
-            var saleId = response.sale_id;
-
-            // Mengambil data detail penjualan dari form
-            var medicineIds = $('.medicine-id').map(function () {
-                return $(this).val();
-            }).get();
-            var quantities = $('.quantity').map(function () {
-                return $(this).val();
-            }).get();
-            var prices = $('.price').map(function () {
-                return $(this).val();
-            }).get();
-            var discounts = $('.discount').map(function () {
-                return $(this).val();
-            }).get();
-            var subtotals = $('.subtotal').map(function () {
-                return $(this).val();
-            }).get();
-
-            // Membuat objek FormData untuk data detail penjualan
-            var detailFormData = new FormData();
-            detailFormData.append('sale_id', saleId);
-            for (var i = 0; i < medicineIds.length; i++) {
-                detailFormData.append('medicine_id[]', medicineIds[i]);
-                detailFormData.append('quantity[]', quantities[i]);
-                detailFormData.append('price[]', prices[i]);
-                detailFormData.append('discount[]', discounts[i]);
-                detailFormData.append('subtotal[]', subtotals[i]);
-            }
-
-            // Mengirim data detail penjualan ke server menggunakan AJAX
+            // Mengirim data penjualan ke server menggunakan AJAX
             $.ajax({
-                url: '{{ route("detailsales.store", ":sale_id") }}'.replace(':sale_id', saleId),
+                url: '{{ route("sales.store") }}',
                 method: 'POST',
-                data: detailFormData,
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    // Mengupdate halaman atau menampilkan pesan sukses
-                    alert('Transaction details added successfully!');
-                    location.reload();
+                    // Mengambil ID penjualan dari respons
+                    var saleId = response.sale_id;
+
+                    // Mengambil data detail penjualan dari form
+                    var medicineIds = $('.medicine-id').map(function () {
+                        return $(this).val();
+                    }).get();
+                    var quantities = $('.quantity').map(function () {
+                        return $(this).val();
+                    }).get();
+                    var prices = $('.price').map(function () {
+                        return $(this).val();
+                    }).get();
+                    var discounts = $('.discount').map(function () {
+                        return $(this).val();
+                    }).get();
+                    var subtotals = $('.subtotal').map(function () {
+                        return $(this).val();
+                    }).get();
+
+                    // Membuat objek FormData untuk data detail penjualan
+                    var detailFormData = new FormData();
+                    detailFormData.append('sale_id', saleId);
+                    for (var i = 0; i < medicineIds.length; i++) {
+                        detailFormData.append('medicine_id[]', medicineIds[i]);
+                        detailFormData.append('quantity[]', quantities[i]);
+                        detailFormData.append('price[]', prices[i]);
+                        detailFormData.append('discount[]', discounts[i]);
+                        detailFormData.append('subtotal[]', subtotals[i]);
+                    }
+
+                    // Mengirim data detail penjualan ke server menggunakan AJAX
+                    $.ajax({
+                        url: '{{ route("detailsales.store", ":sale_id") }}'.replace(':sale_id', saleId),
+                        method: 'POST',
+                        data: detailFormData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            // Mengupdate halaman atau menampilkan pesan sukses
+                            alert('Transaction details added successfully!');
+                            location.reload();
+                        },
+                        error: function (error) {
+                            alert('Failed to add transaction details. Please try again.');
+                        }
+                    });
                 },
                 error: function (error) {
-                    alert('Failed to add transaction details. Please try again.');
+                    alert('Failed to add transaction. Please try again.');
                 }
             });
-        },
-        error: function (error) {
-            alert('Failed to add transaction. Please try again.');
-        }
-    });
-});
+        });
     });
 </script>
 @endsection
