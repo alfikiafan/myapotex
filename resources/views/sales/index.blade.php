@@ -117,7 +117,7 @@
     $(document).ready(function () {
         // Add Item Button
         $('#add-item-btn').click(function () {
-            var newRow = $('#new-row').clone().removeAttr('id').show();
+            const newRow = $('#new-row').clone().removeAttr('id').show();
             newRow.find('td:first').text($('#items-container tr').length-1);
             newRow.find('input[name="medicine_name[]"]').autocomplete({
                 source: function (request, response) {
@@ -144,7 +144,7 @@
                     updateSubtotal(newRow);
                 }
             }).on("keyup", function () {
-                var input = $(this);
+                const input = $(this);
                 if (input.val().length >= 3) {
                     input.autocomplete("search", input.val());
                 }
@@ -170,7 +170,7 @@
 
         // Add Row on Enter
         $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 e.preventDefault();
                 $('#add-item-btn').click();
             }
@@ -185,22 +185,22 @@
 
         // Update Subtotal
         function updateSubtotal(row) {
-            var quantity = row.find('input[name="quantity[]"]').val();
-            var discount = row.find('input[name="medicine_name[]"]').data('discount');
-            var price = row.find('input[name="medicine_name[]"]').data('price');
-            var subtotal = quantity * price * (1 - discount);
+            const quantity = row.find('input[name="quantity[]"]').val();
+            const discount = row.find('input[name="medicine_name[]"]').data('discount');
+            const price = row.find('input[name="medicine_name[]"]').data('price');
+            const subtotal = quantity * price * (1 - discount);
             row.find('td:nth-child(7)').text(subtotal);
         }
 
         $(document).on('input', 'input[name="quantity[]"]', function () {
             // Menghitung discount dan total
-            var discount = 0;
-            var total = 0;
+            let discount = 0;
+            let total = 0;
             $('#items-container tr').each(function () {
-                var quantity = $(this).find('input[name="quantity[]"]').val();
-                var price = $(this).find('input[name="medicine_name[]"]').data('price');
-                var itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
-                var subtotal = quantity * price * (1 - itemDiscount);
+                const quantity = $(this).find('input[name="quantity[]"]').val();
+                const price = $(this).find('input[name="medicine_name[]"]').data('price');
+                const itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
+                const subtotal = quantity * price * (1 - itemDiscount);
                 total += subtotal;
                 discount += quantity * price * itemDiscount;
             });
@@ -212,22 +212,22 @@
 
         // Menghitung kembalian
         $(document).on('input', '#cash', function () {
-            var cash = $(this).val();
-            var total = parseFloat($('#total').val());
-            var change = cash - total;
+            const cash = $(this).val();
+            const total = parseFloat($('#total').val());
+            const change = cash - total;
 
             $('#change').val(change);
         });
 
         $('#pay-btn').click(function () {
             // Mengambil data transaksi dari form
-            var cash = $('#cash').val();
-            var discount = $('#discount').val()
-            var total = $('#total').val();
-            var change = $('#change').val();
+            const cash = $('#cash').val();
+            const discount = $('#discount').val()
+            const total = $('#total').val();
+            const change = $('#change').val();
 
             // Membuat objek FormData dari form
-            var formData = new FormData();
+            const formData = new FormData();
             formData.append('cash', cash);
             formData.append('discount', discount);
             formData.append('total', total);
@@ -249,29 +249,29 @@
                 contentType: false,
                 success: function (response) {
                     // Mengambil ID penjualan dari respons
-                    var saleId = response.sale_id;
+                    const saleId = response.sale_id;
 
                     // Mengambil data detail penjualan dari form
-                    var medicineIds = $('#items-container .medicine-id').map(function (_,el) {
+                    const medicineIds = $('#items-container .medicine-id').map(function (_,el) {
                         return el.textContent;
                     });
-                    var quantities = $('#items-container .quantity').map(function (_,el) {
+                    const quantities = $('#items-container .quantity').map(function (_,el) {
                         return Number(el.value);
                     });
-                    var prices = $('#items-container .price').map(function (_,el) {
+                    const prices = $('#items-container .price').map(function (_,el) {
                         return Number(el.textContent);
                     });
-                    var discounts = $('#items-container .discount').map(function (_,el) {
+                    const discounts = $('#items-container .discount').map(function (_,el) {
                         return Number(el.textContent);
                     });
-                    var subtotals = $('#items-container .subtotal').map(function (_,el) {
+                    const subtotals = $('#items-container .subtotal').map(function (_,el) {
                         return Number(el.textContent);
                     });
 
                     // Membuat objek FormData untuk data detail penjualan
-                    var detailFormData = new FormData();
+                    const detailFormData = new FormData();
                     detailFormData.append('sale_id', saleId);
-                    for (var i = 0; i < medicineIds.length; i++) {
+                    for (let i = 0; i < medicineIds.length; i++) {
                         detailFormData.append('medicine_id[]', medicineIds[i]);
                         detailFormData.append('quantity[]', quantities[i]);
                         detailFormData.append('price[]', prices[i]);
