@@ -12,6 +12,9 @@ class DetailSale extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
 
+    // laravel think the table is detail_sales by default
+    protected $table = 'detailsales';
+
     protected static function boot(): void
     {
         parent::boot();

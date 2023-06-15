@@ -76,16 +76,16 @@
                             </tbody>
                             <tr id="new-row" style="display: none;">
                                 <td class="ps-4"></td>
-                                <td></td>
+                                <td class="medicine-id"></td>
                                 <td>
                                     <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
                                 </td>
                                 <td>
-                                    <input type="number" name="quantity[]" class="form-control" required>
+                                    <input type="number" name="quantity[]" class="quantity form-control" required>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td class="discount"></td>
+                                <td class="price"></td>
+                                <td class="subtotal"></td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-danger delete-row">
                                         <i class="fas fa-trash"></i>
@@ -279,21 +279,21 @@
                     var saleId = response.sale_id;
 
                     // Mengambil data detail penjualan dari form
-                    var medicineIds = $('.medicine-id').map(function () {
-                        return $(this).val();
-                    }).get();
-                    var quantities = $('.quantity').map(function () {
-                        return $(this).val();
-                    }).get();
-                    var prices = $('.price').map(function () {
-                        return $(this).val();
-                    }).get();
-                    var discounts = $('.discount').map(function () {
-                        return $(this).val();
-                    }).get();
-                    var subtotals = $('.subtotal').map(function () {
-                        return $(this).val();
-                    }).get();
+                    var medicineIds = $('#items-container .medicine-id').map(function (_,el) {
+                        return el.textContent;
+                    });
+                    var quantities = $('#items-container .quantity').map(function (_,el) {
+                        return Number(el.value);
+                    });
+                    var prices = $('#items-container .price').map(function (_,el) {
+                        return Number(el.textContent);
+                    });
+                    var discounts = $('#items-container .discount').map(function (_,el) {
+                        return Number(el.textContent);
+                    });
+                    var subtotals = $('#items-container .subtotal').map(function (_,el) {
+                        return Number(el.textContent);
+                    });
 
                     // Membuat objek FormData untuk data detail penjualan
                     var detailFormData = new FormData();
