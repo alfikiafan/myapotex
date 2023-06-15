@@ -44,7 +44,7 @@ class UserController extends Controller
 
         $success =  User::create($request->all());
 
-        if (!$success) {
+        if ($success) {
             return redirect()->route('accounts.index')->with('success', 'User add successfully.');
         }
         else{
@@ -82,7 +82,7 @@ class UserController extends Controller
         return redirect()->route('accounts.index')->with('success', 'User deleted successfully.');
     }
 
-    
+
     public function showProfile(User $user)
     {
         $user = auth()->user();
@@ -110,5 +110,5 @@ class UserController extends Controller
             return redirect()->route('profile.edit', $user->id)->withErrors('Profile failed to update.');
         }
     }
-    
+
 }
