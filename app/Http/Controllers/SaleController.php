@@ -2,26 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Medicine;
 use App\Models\DetailSale;
+use Illuminate\View\View;
 
 
 class SaleController extends Controller
 {
-    public function index()
+    public function index() :View|RedirectResponse
     {
-        $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
-        $medicines = Medicine::all();
-        return view('sales.index', compact('sales', 'medicines'));
-    }   
+        if(auth()->user()->can('admin')){
+            $sales = Sale::paginate(10);
+            return view('sales.index', compact('sales'));
+        } else if(auth()->user()->can('cashier')){
+            $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
+            $medicines = Medicine::all();
+            return view('sales.index', compact('sales', 'medicines'));
+        } else{
+            return redirect('/');
+        }
+    }
 
     public function create()
     {
         $medicines = Medicine::all();
         return view('sales.create', compact('medicines'));
-    }    
+    }
 
     public function store(Request $request)
     {
@@ -33,7 +42,7 @@ class SaleController extends Controller
         $sale->cash = $request->input('cash');
         $sale->change = $request->input('change');
         $sale->save();
-    
+
         // Kirim respon dengan ID penjualan yang berhasil dibuat
         return response()->json(['sale_id' => $sale->id]);
     }
