@@ -16,7 +16,7 @@
                                 <h6 class="font-weight-semibold text-m mb-0">ID Transaction: T0001</h6>
                             </div>
                             <a href="">
-                                <button type="button" class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 me-2">
+                                <button type="button" id="reset-transaction-btn" class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 me-2">
                                     <span class="btn-inner--text">Reset‎ transaction</span>
                                 </button>
                             </a>
@@ -45,33 +45,6 @@
                                 </tr>
                             </thead>
                             <tbody id="items-container">
-                                @foreach($sales as $sale)
-                                    @foreach($sale->detailSales as $index => $detailSale)
-                                        <tr>
-                                            <td class="ps-4 row-number">{{ $index + 1 }}</td>
-                                            <td>{{ $detailSale->medicine->id }}</td>
-                                            <td>
-                                                <select name="medicine_id[]" class="form-control">
-                                                    <option value="">Select Medicine</option>
-                                                    @foreach($medicines as $medicine)
-                                                        <option value="{{ $medicine->id }}" data-discount="{{ $medicine->discount }}" data-price="{{ $medicine->price }}">{{ $medicine->name }} - {{ $medicine->brand }} - {{ $medicine->category }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="number" name="quantity[]" class="form-control" required>
-                                            </td>
-                                            <td>{{ $detailSale->medicine->discount }}</td>
-                                            <td>{{ $detailSale->medicine->price }}</td>
-                                            <td>{{ $detailSale->medicine->discount * $detailSale->medicine->price * $detailSale->quantity }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-danger delete-row">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endforeach
 
                             </tbody>
                             <tr id="new-row" style="display: none;">
@@ -327,6 +300,13 @@
                     alert('Failed to add transaction. Please try again.');
                 }
             });
+        });
+
+        $('#reset-transaction-btn').click(function(){
+            const parentElement = document.getElementById("items-container");
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
         });
     });
 </script>
