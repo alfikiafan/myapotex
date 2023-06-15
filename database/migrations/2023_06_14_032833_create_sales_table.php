@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('total', 12, 2);
             $table->decimal('cash', 12, 2);
             $table->decimal('change', 12, 2);
+            $table->boolean('is_success')->default(false);
             $table->timestamps();
         });
     }
