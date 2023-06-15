@@ -2,26 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Sale;
 use App\Models\Medicine;
 use App\Models\DetailSale;
+use Illuminate\View\View;
 
 
 class SaleController extends Controller
 {
-    public function index()
+    public function index() :View|RedirectResponse
     {
-        $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
-        $medicines = Medicine::all();
-        return view('sales.index', compact('sales', 'medicines'));
-    }   
+        if(auth()->user()->can('admin')){
+            $search = request()?->input('search');
+
+            if ($search) {
+                $sales = Sale::with('cashier')
+                    ->where('id', 'like', "%$search%")
+                    ->orWhere('cashier_id', 'like', "%$search%")
+                    ->orWhere('created_at', 'like', "%$search%")
+                    ->orWhereHas('cashier', function ($query) use ($search) {
+                        $query->where('name', 'like', "%$search%")
+                            ->orWhere('email', 'like', "%$search%");
+                    })->paginate(10);
+            } else {
+                $sales = Sale::paginate(10);
+            }
+            return view('sales.index', compact('sales'));
+        } else if(auth()->user()->can('cashier')){
+            $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
+            $medicines = Medicine::all();
+            return view('sales.index', compact('sales', 'medicines'));
+        } else{
+            return redirect('/');
+        }
+    }
 
     public function create()
     {
         $medicines = Medicine::all();
         return view('sales.create', compact('medicines'));
-    }    
+    }
 
     public function store(Request $request)
     {
@@ -33,7 +56,7 @@ class SaleController extends Controller
         $sale->cash = $request->input('cash');
         $sale->change = $request->input('change');
         $sale->save();
-    
+
         // Kirim respon dengan ID penjualan yang berhasil dibuat
         return response()->json(['sale_id' => $sale->id]);
     }
