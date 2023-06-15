@@ -11,6 +11,7 @@
           <x-sidebar.nav-item name="medicines" route="medicines.index"/>
           <x-sidebar.nav-item name="sales" route="sales.index"/>
           <x-sidebar.nav-item name="accounts" route="accounts.index"/>
+          <x-sidebar.nav-item name="profile" route="profile.index"/>
 
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('logout') ? ' active' : ''}}"
