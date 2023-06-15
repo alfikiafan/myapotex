@@ -28,14 +28,16 @@
                       <input type="text" class="form-control form-control-sm" name="search" value="{{ request('search') }}" placeholder="Search">
                     </div>
                   </form>
-                  <a href="{{ route('medicines.create') }}">
-                    <button type="button" class="btn btn-sm btn-dark btn-icon d-flex align-items-center mb-0 me-2">
-                    <span class="btn-inner--icon me-2">
-                      <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
-                    </span>
-                      <span class="btn-inner--text">Add‎ medicine</span>
-                    </button>
-                  </a>
+                    @can('admin')
+                      <a href="{{ route('medicines.create') }}">
+                        <button type="button" class="btn btn-sm btn-dark btn-icon d-flex align-items-center mb-0 me-2">
+                        <span class="btn-inner--icon me-2">
+                          <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
+                        </span>
+                          <span class="btn-inner--text">Add medicine</span>
+                        </button>
+                      </a>
+                    @endcan
                 </div>
               </div>
             </div>
@@ -51,7 +53,9 @@
                       <th class="text-secondary text-xs font-weight-semibold">Quantity</th>
                       <th class="text-secondary text-xs font-weight-semibold">Discount</th>
                       <th class="text-secondary text-xs font-weight-semibold">Price</th>
-                      <th class="text-secondary text-xs font-weight-semibold">Action</th>
+                        @can('admin')
+                            <th class="text-secondary text-xs font-weight-semibold">Action</th>
+                        @endcan
                     </tr>
                   </thead>
                   <tbody>
@@ -63,23 +67,32 @@
                     <td class="text-xs ps-4">{{ $medicine->category }}</td>
                     <td class="text-xs ps-4">{{ $medicine->quantity }}</td>
                     <td class="text-xs ps-4">{{ number_format($medicine->discount * 100, 0) }}%</td>
-                    <td class="text-xs ps-4 text-end">Rp{{ number_format($medicine->price, 2, ',', '.') }}</td>
-                    <td class="ps-4">
-                      <div class="d-flex align-items-center">
-                        <a href="{{ route('medicines.edit', $medicine) }}">
-                          <button type="button" class="btn btn-sm btn-primary mb-0 me-1">
-                            <i class="fas fa-pencil-alt"></i>
-                          </button>
-                        </a>
-                        <form action="{{ route('medicines.destroy', $medicine->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm mb-0 ms-1 btn-danger" onclick="return confirm('Are you sure to delete this medicine?')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                      </div>
+                    <td class="text-xs ps-4 text-end d-flex flex-row justify-content-between">
+                        <div class="p-2">Rp</div>
+                        <div class="p-2 text-end">
+                         {{ number_format($medicine->price, 2, ',', '.') }}
+                        </div>
+                        <div></div>
                     </td>
+                      @can('admin')
+                        <td class="ps-4">
+
+                          <div class="d-flex align-items-center">
+                            <a href="{{ route('medicines.edit', $medicine) }}">
+                              <button type="button" class="btn btn-sm btn-primary mb-0 me-1">
+                                <i class="fas fa-pencil-alt"></i>
+                              </button>
+                            </a>
+                            <form action="{{ route('medicines.destroy', $medicine->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm mb-0 ms-1 btn-danger" onclick="return confirm('Are you sure to delete this medicine?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                          </div>
+                        </td>
+                      @endcan
                   </tr>
                   @endforeach
                   </tbody>

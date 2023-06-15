@@ -10,7 +10,9 @@
           <x-sidebar.nav-item name="dashboard" route="dashboard"/>
           <x-sidebar.nav-item name="medicines" route="medicines.index"/>
           <x-sidebar.nav-item name="sales" route="sales.index"/>
+          @can('admin')
           <x-sidebar.nav-item name="accounts" route="accounts.index"/>
+          @endcan
           <x-sidebar.nav-item name="profile" route="profile.index"/>
 
         <li class="nav-item">
