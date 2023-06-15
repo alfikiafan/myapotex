@@ -81,4 +81,34 @@ class UserController extends Controller
 
         return redirect()->route('accounts.index')->with('success', 'User deleted successfully.');
     }
+
+    
+    public function showProfile(User $user)
+    {
+        $user = auth()->user();
+        return view('profile.index', compact('user'));
+    }
+
+    public function editProfile(User $user): View
+    {
+        return view('profile.edit', compact('user'));
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'required',
+        ]);
+
+        $success = $user->update($request->all());
+
+        if ($success) {
+            return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+        } else {
+            return redirect()->route('profile.edit', $user->id)->withErrors('Profile failed to update.');
+        }
+    }
+    
 }

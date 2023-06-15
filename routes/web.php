@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
         })->name('sales.index');
     });
 
+    // Rute Profile
+    Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.index');
+    Route::get('/profile/{user}/edit', [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
 });
 
 
