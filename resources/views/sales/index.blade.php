@@ -234,9 +234,15 @@
     $(document).ready(function () {
         // Nilai ID
         const lastId = "{{ $sales->max('id') }}";
-        const lastIdNumber = parseInt(lastId.substr(1));
-        const newIdNumber = lastIdNumber + 1;
-        const newId = `S${newIdNumber.toString().padStart(3, "0")}`;
+        let newId;
+
+        if (lastId > 0) {
+            const lastIdNumber = parseInt(lastId.substr(1));
+            const newIdNumber = lastIdNumber + 1;
+            newId = `S${newIdNumber.toString().padStart(3, "0")}`;
+        } else {
+            newId = "S001";
+        }
         document.getElementById('newId').textContent = newId;
 
         // Add Item Button
