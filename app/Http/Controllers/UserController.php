@@ -110,4 +110,5 @@ class UserController extends Controller
             return redirect()->route('profile.edit', $user->id)->withErrors('Profile failed to update.');
         }
     }
+    
 }

@@ -57,7 +57,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-center mt-5 mb-3">
-             <button type="submit" class="btn btn-primary">Update Profile</button>
+              <button type="submit" class="btn btn-primary">Update Profile</button>
             </div>
           </form>
         </div>
