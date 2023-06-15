@@ -51,13 +51,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
     });
 
-    // Rute sell
+    // Rute sales/sell
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
+
     Route::middleware('cashier')->group(function () {
-        Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
-        Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
         Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
         Route::post('/sales/{sale_id}', [DetailSaleController::class, 'store'])->name('detailsales.store');
-    });    
+    });
 
     // Rute Profile
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.index');
