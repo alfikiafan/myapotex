@@ -34,8 +34,10 @@ class Sale extends Model
 
     protected $fillable = [
         'cashier_id',
-        'date',
-        'time',
+        'discount',
+        'total',
+        'cash',
+        'change',
     ];
 
     // eloquent relationship with user
