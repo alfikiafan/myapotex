@@ -239,9 +239,9 @@
         if (lastId > 0) {
             const lastIdNumber = parseInt(lastId.substr(1));
             const newIdNumber = lastIdNumber + 1;
-            newId = `S${newIdNumber.toString().padStart(3, "0")}`;
+            newId = `S${newIdNumber.toString().padStart(4, "0")}`;
         } else {
-            newId = "S001";
+            newId = "S0001";
         }
         document.getElementById('newId').textContent = newId;
 
