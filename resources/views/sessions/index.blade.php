@@ -19,7 +19,7 @@
                                 <img src="https://source.unsplash.com/600x100?pharmacy" class="card-img-top" alt="Pharmacy">
                                 <div class="card-body">
                                     <h5 class="card-title text-center">Welcome to Pharmacy Management System</h5>
-                                    <p class="card-text text-center">Your Trusted Partner in Health</p>
+                                    <p class="card-text text-center">Your Trusted Partner in Health.</p>
                                 </div>
                             </div>
                             <div class="row d-flex align-items-center justify-content-center">
