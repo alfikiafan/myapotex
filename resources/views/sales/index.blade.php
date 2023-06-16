@@ -174,8 +174,8 @@
                                     <input type="number" name="quantity[]" class="quantity form-control" min="0" required>
                                 </td>
                                 <td class="discount"></td>
-                                <td class="price"></td>
-                                <td class="subtotal"></td>
+                                <td class="price text-end"></td>
+                                <td class="subtotal text-end"></td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-danger delete-row">
                                         <i class="fas fa-trash"></i>
@@ -269,8 +269,8 @@
                     newRow.find('input[name="medicine_name[]"]').attr('data-discount', ui.item.discount);
                     newRow.find('input[name="medicine_name[]"]').attr('data-price', ui.item.price);
                     newRow.find('td:nth-child(2)').text(ui.item.id);
-                    newRow.find('td:nth-child(5)').text(ui.item.discount);
-                    newRow.find('td:nth-child(6)').text(ui.item.price);
+                    newRow.find('td:nth-child(5)').text((ui.item.discount * 100) + '%');
+                    newRow.find('td:nth-child(6)').text('Rp' + ui.item.price);
                     updateSubtotal(newRow);
                 },
                 autofocus: true
@@ -315,7 +315,7 @@
             const discount = row.find('input[name="medicine_name[]"]').data('discount');
             const price = row.find('input[name="medicine_name[]"]').data('price');
             const subtotal = quantity * price * (1 - discount);
-            row.find('td:nth-child(7)').text(subtotal);
+            row.find('td:nth-child(7)').text('Rp' + subtotal.toFixed(2));
         }
 
         // Store Sale in database
@@ -372,15 +372,15 @@
                     const quantities = $('#items-container .quantity').map(function (_,el) {
                         return Number(el.value);
                     });
-                    const prices = $('#items-container .price').map(function (_,el) {
-                        return Number(el.textContent);
-                    });
-                    const discounts = $('#items-container .discount').map(function (_,el) {
-                        return Number(el.textContent);
-                    });
-                    const subtotals = $('#items-container .subtotal').map(function (_,el) {
-                        return Number(el.textContent);
-                    });
+                    const prices = $('#items-container .price').map(function (_, el) {
+                        return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
+                    }).get();
+                    const discounts = $('#items-container input[name="medicine_name[]"]').map(function () {
+                        return parseFloat($(this).data('discount'));
+                    }).get();
+                    const subtotals = $('#items-container .subtotal').map(function (_, el) {
+                        return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
+                    }).get();
 
                     // Membuat objek FormData untuk data detail penjualan
                     const detailFormData = new FormData();
