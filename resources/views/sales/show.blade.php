@@ -44,7 +44,15 @@
                   <td class="text-xs ps-4 py-3">{{ $detailSale->id }}</td>
                   <td class="text-xs ps-4 py-3">{{ $detailSale->medicine_name }}</td>
                   <td class="text-xs ps-4 py-3">{{ $detailSale->quantity }}</td>
-                  <td class="text-xs ps-4 py-3">Rp {{ number_format($detailSale->price, 2, ',', '.') }}</td>
+                  <td class="text-xs ps-4 py-3">
+                    <div class="d-flex justify-content-between">
+
+                        <span>Rp</span>
+                        <span class="text-end">
+                            {{ number_format($detailSale->price, 2, ',', '.') }}
+                        </span>
+                    </div>
+                  </td>
                   <td class="text-xs ps-4 py-3">{{ number_format($detailSale->discount * 100, 0) }} % </td>
                   <td class="text-xs ps-4 py-3">Rp {{ number_format($detailSale->subtotal, 2, ',', '.') }}</td>
                  </tr>
