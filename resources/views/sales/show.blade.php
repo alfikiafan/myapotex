@@ -8,7 +8,7 @@
            <div class="card-header border-bottom pb-0">
              <div class="d-sm-flex align-items-center mb-3">
                <div>
-                 <h6 class="font-weight-semibold text-lg mb-0">Detail Sale List of Transaction {{ $sale->id }}</h6>
+                 <h6 class="font-weight-semibold text-lg mb-0">Detail Sale List of Transaction for {{ $sale->id }}</h6>
                  <p class="text-sm mb-sm-0">See information about all detail sales list</p>
                </div>
                <div class="ms-auto d-flex">
@@ -25,11 +25,11 @@
                </div>
              </div>
            </div>
-           <div class="card-body px-0 py-0">
-             <div class="table-responsive p-0">
-               <table class="table align-items-center mb-0">
-                 <thead class="bg-gray-100">
-                   <tr>
+           <div id="print" class="card-body px-0 py-0">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead class="bg-gray-100">
+                  <tr>
                      <th class="text-secondary text-xs font-weight-semibold">ID</th>
                      <th class="text-secondary text-xs font-weight-semibold">Medicine Name</th>
                      <th class="text-secondary text-xs font-weight-semibold">Quantity</th>
@@ -41,20 +41,24 @@
                  <tbody>
                  @foreach ($detailSales as $detailSale)
                  <tr>
-                  <td class="text-xs ps-4 py-3">{{ $detailSale->id }}</td>
-                  <td class="text-xs ps-4 py-3">{{ $detailSale->medicine_name }}</td>
-                  <td class="text-xs ps-4 py-3">{{ $detailSale->quantity }}</td>
-                  <td class="text-xs ps-4 py-3">
-                    <div class="d-flex justify-content-between">
-
-                        <span>Rp</span>
-                        <span class="text-end">
-                            {{ number_format($detailSale->price, 2, ',', '.') }}
-                        </span>
+                  <td class="text-xs ps-4">{{ $detailSale->id }}</td>
+                  <td class="text-xs ps-4">{{ $detailSale->medicine_name }}</td>
+                  <td class="text-xs ps-4">{{ $detailSale->quantity }}</td>
+                  <td class="text-xs ps-4 text-end d-flex flex-row justify-content-between">
+                    <div class="p-2">Rp</div>
+                    <div class="p-2 text-end">
+                      {{ number_format($detailSale->price, 2, ',', '.') }}
                     </div>
+                    <div></div>
                   </td>
-                  <td class="text-xs ps-4 py-3">{{ number_format($detailSale->discount * 100, 0) }} % </td>
-                  <td class="text-xs ps-4 py-3">Rp {{ number_format($detailSale->subtotal, 2, ',', '.') }}</td>
+                  <td class="text-xs ps-4">{{ number_format($detailSale->discount * 100, 0) }} % </td>
+                  <td class="text-xs ps-4 text-end d-flex flex-row justify-content-between">
+                    <div class="p-2">Rp</div>
+                    <div class="p-2 text-end">
+                      {{ number_format($detailSale->subtotal, 2, ',', '.') }}
+                    </div>
+                    <div></div>
+                  </td>
                  </tr>
                  @endforeach
                  </tbody>
