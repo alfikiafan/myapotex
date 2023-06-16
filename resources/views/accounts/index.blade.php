@@ -58,7 +58,13 @@
                     <td class="text-xs ps-4">{{ $user->id }}</td>
                     <td class="text-xs ps-4">{{ $user->name }}</td>
                     <td class="text-xs ps-4">{{ $user->email }}</td>
-                    <td class="text-xs ps-4">{{ $user->role }}</td>
+                    <td class="text-xs ps-4">
+                      @if ($user->role == 'administrator')
+                        <div class="badge badge-lg badge-success"> {{ $user->role }}</div>
+                      @else
+                        <div class="badge badge-lg badge-primary"> {{ $user->role }}</div>
+                      @endif
+                    </td>
                     <td class="text-xs ps-4">{{ $user->joining_date }}</td>
                     <td class="ps-4">
                       <div class="d-flex align-items-center">
