@@ -62,11 +62,11 @@
                     <td class="text-xs ps-4">{{ $user->joining_date }}</td>
                     <td class="ps-4">
                       <div class="d-flex align-items-center">
-                        <a href="{{ route('accounts.edit', $user) }}">
+                        {{-- <a href="{{ route('accounts.edit', $user) }}">
                           <button type="button" class="btn btn-sm btn-primary mb-0 me-1">
                             <i class="fas fa-pencil-alt"></i>
                           </button>
-                        </a>
+                        </a> --}}
                         <form action="{{ route('accounts.destroy', $user->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
