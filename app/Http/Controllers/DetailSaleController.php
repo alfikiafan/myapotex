@@ -13,6 +13,7 @@ class DetailSaleController extends Controller
     public function store(Request $request)
     {
         $saleId = $request->input('sale_id');
+        $is_success = $request->input('is_success');
         $medicineIds = $request->input('medicine_id');
         $quantities = $request->input('quantity');
         $prices = $request->input('price');
@@ -30,6 +31,9 @@ class DetailSaleController extends Controller
             $detailSale->subtotal = $subtotals[$i];
 
             $detailSale->save();
+            if ($is_success) {
+                Medicine::find($detailSale->medicine_id)->decrement('quantity', $quantities[$i]);
+            }
         }
 
         // Kirim respon sukses
@@ -92,7 +96,7 @@ class DetailSaleController extends Controller
                     ->orWhere('medicines.name', 'like', "%$search%");
             });
         }
-            
+
         $detailSales = $query->paginate(8);
 
         return view('sales.show', compact('detailSales', 'sale'));

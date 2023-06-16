@@ -362,8 +362,9 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    // Mengambil ID penjualan dari respons
+                    // Mengambil ID penjualan & status penjualan dari respons
                     const saleId = response.sale_id;
+                    const isSuccess = response.is_success;
 
                     // Mengambil data detail penjualan dari form
                     const medicineIds = $('#items-container .medicine-id').map(function (_,el) {
@@ -385,6 +386,8 @@
                     // Membuat objek FormData untuk data detail penjualan
                     const detailFormData = new FormData();
                     detailFormData.append('sale_id', saleId);
+                    detailFormData.append('is_success', isSuccess);
+
                     for (let i = 0; i < medicineIds.length; i++) {
                         detailFormData.append('medicine_id[]', medicineIds[i]);
                         detailFormData.append('quantity[]', quantities[i]);
