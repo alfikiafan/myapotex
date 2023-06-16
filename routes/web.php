@@ -46,18 +46,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/accounts', [UserController::class, 'index'])->name('accounts.index');
         Route::post('/accounts', [UserController::class, 'store'])->name('accounts.store');
         Route::get('/accounts/create', [UserController::class, 'create'])->name('accounts.create');
-        Route::get('/accounts/{user}/edit', [UserController::class, 'edit'])->name('accounts.edit');
-        Route::put('/accounts/{user}', [UserController::class, 'update'])->name('accounts.update');
+        // Route::get('/accounts/{user}/edit', [UserController::class, 'edit'])->name('accounts.edit');
+        // Route::put('/accounts/{user}', [UserController::class, 'update'])->name('accounts.update');
         Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
     });
 
     // Rute sales/sell
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
+    
+    Route::middleware('administrator')->group(function () {
+        Route::get('/sales/{sale}', [DetailSaleController::class, 'show'])->name('sales.show');
+    });
 
     Route::middleware('cashier')->group(function () {
         Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
-        Route::post('/sales/{sale_id}', [DetailSaleController::class, 'store'])->name('detailsales.store');
+        Route::post('/sales/{sale}', [DetailSaleController::class, 'store'])->name('detailsales.store');
     });
 
     // Rute Profile

@@ -82,7 +82,7 @@
                                             </td>
                                             <td class="ps-4">
                                                 <div class="d-flex align-items-center">
-                                                    <a href="#">
+                                                    <a href="{{ route('sales.show', $sale) }}">
                                                         <button type="button" class="btn btn-sm btn-primary mb-0 me-1">
                                                             <i class="fa-solid fa-eye fa-10x" aria-hidden="true" style="color:#DDD;width: 16px"></i>
                                                         </button>
