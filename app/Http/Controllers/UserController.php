@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Medicine;
+use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -110,5 +112,26 @@ class UserController extends Controller
             return redirect()->route('profile.edit', $user->id)->withErrors('Profile failed to update.');
         }
     }
+
+    function showDashboard(User $user)
+    {
+        $user = auth()->user();
+        // total admin and cashier in database
+        $totalAdmin = User::where('role', 'administrator')->count();
+        $totalCashier = User::where('role', 'cashier')->count();
+        // total medicine in database
+        $totalMedicine = Medicine::count();
+        // total benefits sales in database
+        $totalSales = Sale::sum('total');
+        // total medicine that quantity is less equal than 10
+        $totalMedicineLessThan10 = Medicine::where('quantity', '<=', 10)->count();
+        // total sale according to cashier_id today
+        $totalSalesToday = Sale::where('cashier_id', $user->id)->whereDate('created_at', date('Y-m-d'))->sum('total');
+        // total sale according to cashier_id this month
+        $totalSalesThisMonth = Sale::where('cashier_id', $user->id)->whereMonth('created_at', date('m'))->sum('total');
+        // total sale according to cashier_id this year
+        $totalSalesThisYear = Sale::where('cashier_id', $user->id)->whereYear('created_at', date('Y'))->sum('total');
+        return view('sessions.index', compact('user', 'totalAdmin', 'totalCashier','totalMedicine', 'totalSales', 
+                    'totalMedicineLessThan10', 'totalSalesToday', 'totalSalesThisMonth', 'totalSalesThisYear'));    }
 
 }
