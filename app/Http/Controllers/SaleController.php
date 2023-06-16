@@ -60,7 +60,7 @@ class SaleController extends Controller
         $sale->save();
 
         // Kirim respon dengan ID penjualan yang berhasil dibuat
-        return response()->json(['sale_id' => $sale->id]);
+        return response()->json(['sale_id' => $sale->id,'is_success' => $sale->is_success]);
     }
 
     public function update(Request $request, $id)
