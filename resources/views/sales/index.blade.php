@@ -405,10 +405,14 @@
                         contentType: false,
                         success: function (response) {
                             // Mengupdate halaman atau menampilkan pesan sukses
-                            if(is_success)
-                                alert('Transaction details added successfully! (PAID)');
-                            else
-                                alert('Transaction details added successfully! (CANCELLED)');
+                            if(response.status ==='nostock'){
+                                alert('One or more medicine stock is empty.');
+                                response.message.forEach(function (item) {
+                                    alert(item+'\n');
+                                });
+                                return;
+                            }
+                            alert(response.message);
                             location.reload();
                         },
                         error: function (error) {

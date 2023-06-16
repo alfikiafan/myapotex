@@ -20,6 +20,24 @@ class DetailSaleController extends Controller
         $discounts = $request->input('discount');
         $subtotals = $request->input('subtotal');
 
+        // Check stock
+        $allStockOk = true;
+        $stockMessage = [];
+        for ($i = 0; $i < count($medicineIds); $i++) {
+            $medicine_id = $medicineIds[$i];
+            $quantity = $quantities[$i];
+
+            $meds = Medicine::find($medicine_id);
+            if($meds->quantity < $quantities[$i]){
+                $allStockOk = false;
+                $stockMessage[] = 'Stok '.$meds->name.' tidak mencukupi! (sisa stok: '.$meds->quantity.')';
+            }
+        }
+
+        if(!$allStockOk){
+            return response()->json(['message' => $stockMessage,'status' => 'error']);
+        }
+
         // Simpan setiap detail penjualan
         for ($i = 0; $i < count($medicineIds); $i++) {
             $detailSale = new DetailSale();
@@ -32,12 +50,13 @@ class DetailSaleController extends Controller
 
             $detailSale->save();
             if ($is_success) {
-                Medicine::find($detailSale->medicine_id)->decrement('quantity', $quantities[$i]);
+                $meds = Medicine::find($detailSale->medicine_id);
+                $meds->decrement('quantity', $quantities[$i]);
             }
         }
 
         // Kirim respon sukses
-        return response()->json(['message' => 'Transaction details added successfully!']);
+        return response()->json(['message' => 'Transaction details added successfully!'. ($is_success? ' (PAID) ':' (CANCELLED) ')]);
     }
 
     public function update(Request $request, $id)
