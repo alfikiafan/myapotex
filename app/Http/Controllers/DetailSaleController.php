@@ -13,11 +13,30 @@ class DetailSaleController extends Controller
     public function store(Request $request)
     {
         $saleId = $request->input('sale_id');
+        $is_success = $request->input('is_success');
         $medicineIds = $request->input('medicine_id');
         $quantities = $request->input('quantity');
         $prices = $request->input('price');
         $discounts = $request->input('discount');
         $subtotals = $request->input('subtotal');
+
+        // Check stock
+        $allStockOk = true;
+        $stockMessage = [];
+        for ($i = 0; $i < count($medicineIds); $i++) {
+            $medicine_id = $medicineIds[$i];
+            $quantity = $quantities[$i];
+
+            $meds = Medicine::find($medicine_id);
+            if($meds->quantity < $quantities[$i]){
+                $allStockOk = false;
+                $stockMessage[] = 'Stok '.$meds->name.' tidak mencukupi! (sisa stok: '.$meds->quantity.')';
+            }
+        }
+
+        if(!$allStockOk){
+            return response()->json(['message' => $stockMessage,'status' => 'error']);
+        }
 
         // Simpan setiap detail penjualan
         for ($i = 0; $i < count($medicineIds); $i++) {
@@ -30,10 +49,14 @@ class DetailSaleController extends Controller
             $detailSale->subtotal = $subtotals[$i];
 
             $detailSale->save();
+            if ($is_success) {
+                $meds = Medicine::find($detailSale->medicine_id);
+                $meds->decrement('quantity', $quantities[$i]);
+            }
         }
 
         // Kirim respon sukses
-        return response()->json(['message' => 'Transaction details added successfully!']);
+        return response()->json(['message' => 'Transaction details added successfully!'. ($is_success? ' (PAID) ':' (CANCELLED) ')]);
     }
 
     public function update(Request $request, $id)
@@ -92,7 +115,7 @@ class DetailSaleController extends Controller
                     ->orWhere('medicines.name', 'like', "%$search%");
             });
         }
-            
+
         $detailSales = $query->paginate(8);
 
         return view('sales.show', compact('detailSales', 'sale'));
