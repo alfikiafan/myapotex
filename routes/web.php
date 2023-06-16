@@ -54,10 +54,14 @@ Route::middleware('auth')->group(function () {
     // Rute sales/sell
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
+    
+    Route::middleware('administrator')->group(function () {
+        Route::get('/sales/{sale}', [DetailSaleController::class, 'show'])->name('sales.show');
+    });
 
     Route::middleware('cashier')->group(function () {
         Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
-        Route::post('/sales/{sale_id}', [DetailSaleController::class, 'store'])->name('detailsales.store');
+        Route::post('/sales/{sale}', [DetailSaleController::class, 'store'])->name('detailsales.store');
     });
 
     // Rute Profile

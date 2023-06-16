@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DetailSale;
 use App\Models\Sale;
+use App\Models\Medicine;
 
 
 class DetailSaleController extends Controller
@@ -72,4 +73,38 @@ class DetailSaleController extends Controller
 
         return redirect()->route('sales.index')->with('success', 'Detail sale deleted successfully.');
     }
+
+    public function show(Sale $sale, Request $request)
+    {
+        $search = $request->input('search');
+
+        $query = DetailSale::where('sale_id', $sale->id)
+            ->select('detailsales.*', 'medicines.name as medicine_name')
+            ->join('medicines', 'detailsales.medicine_id', '=', 'medicines.id');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('detailsales.id', 'like', "%$search%")
+                    ->orWhere('detailsales.quantity', 'like', "%$search%")
+                    ->orWhere('detailsales.price', 'like', "%$search%")
+                    ->orWhere('detailsales.discount', 'like', "%$search%")
+                    ->orWhere('detailsales.subtotal', 'like', "%$search%")
+                    ->orWhere('medicines.name', 'like', "%$search%");
+            });
+        }
+            
+        $detailSales = $query->paginate(8);
+
+        return view('sales.show', compact('detailSales', 'sale'));
+    }
+
+
+    // public function show($id)
+    // {
+    //     $detailSales = DetailSale::where('sale_id', $id)->get();
+    //     $sale = Sale::findOrFail($id);
+    //     $medicines = Medicine::all();
+
+    //     return view('sales.show', compact('detailSales', 'sale', 'medicines'));
+    // }
 }
