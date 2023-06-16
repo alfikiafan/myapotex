@@ -23,6 +23,7 @@ class SaleController extends Controller
                     ->where('id', 'like', "%$search%")
                     ->orWhere('cashier_id', 'like', "%$search%")
                     ->orWhere('created_at', 'like', "%$search%")
+                    ->orWhere('total', 'like', "%$search%")
                     ->orWhereHas('cashier', function ($query) use ($search) {
                         $query->where('name', 'like', "%$search%")
                             ->orWhere('email', 'like', "%$search%");
