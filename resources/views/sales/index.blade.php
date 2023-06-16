@@ -316,7 +316,7 @@
             const discount = row.find('input[name="medicine_name[]"]').data('discount');
             const price = row.find('input[name="medicine_name[]"]').data('price');
             const subtotal = quantity * price * (1 - discount);
-            row.find('td:nth-child(7)').text('Rp' + subtotal.toFixed(2));
+            row.find('td:nth-child(7)').text(`Rp${subtotal.toFixed(2)}`);
         }
 
         // Store Sale in database
