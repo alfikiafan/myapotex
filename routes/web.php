@@ -28,7 +28,11 @@ Route::redirect('/home', '/')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     // Rute Dashboard
-    Route::redirect('/', '/medicines');
+    Route::redirect('/', '/dashboard');
+    Route::get('/dashboard', function () {
+        return view('sessions.index');
+    })->name('dashboard');
+    
 
     // Rute Medicine
     Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
@@ -72,9 +76,9 @@ Route::middleware('auth')->group(function () {
 
 
 // Rute sementara
-Route::get('/dashboard', function () {
-    return redirect()->route('medicines.index');
-})->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return redirect()->route('medicines.index');
+// })->name('dashboard');
 
 Route::get('/logout', function () {
     return redirect()->route('medicines.index');
