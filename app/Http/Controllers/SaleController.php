@@ -55,6 +55,7 @@ class SaleController extends Controller
         $sale->total = $request->input('total');
         $sale->cash = $request->input('cash');
         $sale->change = $request->input('change');
+        $sale->is_success = $request->input('is_success');
         $sale->save();
 
         // Kirim respon dengan ID penjualan yang berhasil dibuat
