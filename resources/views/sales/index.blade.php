@@ -206,7 +206,7 @@
                 <div class="row mt-2">
                     <div class="col-md-12">
                         <button type="submit" id="pay-btn" class="btn btn-dark me-2">Pay</button>
-                        <button type="button" class="btn btn-secondary me-2">Cancel</button>
+                        <button type="button" id="cancel-btn" class="btn btn-secondary me-2">Cancel</button>
                         <button type="button" id="print-btn" class="btn btn-primary" onclick="window.print();return false;">Print Payment Receipt</button>
                     </div>
                 </div>
@@ -318,42 +318,23 @@
             row.find('td:nth-child(7)').text(subtotal);
         }
 
-        $(document).on('input', 'input[name="quantity[]"]', function () {
-            // Menghitung discount dan total
-            let discount = 0;
-            let total = 0;
-            $('#items-container tr').each(function () {
-                const quantity = $(this).find('input[name="quantity[]"]').val();
-                const price = $(this).find('input[name="medicine_name[]"]').data('price');
-                const itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
-                const subtotal = quantity * price * (1 - itemDiscount);
-                total += subtotal;
-                discount += quantity * price * itemDiscount;
-            });
-
-            // Mengupdate nilai discount dan total
-            $('#discount').val(discount);
-            $('#total').val(total);
-        });
-
-        // Menghitung kembalian
-        $(document).on('input', '#cash', function () {
-            const cash = $(this).val();
-            const total = parseFloat($('#total').val());
-            const change = cash - total;
-
-            $('#change').val(change);
-        });
-
-        $('#pay-btn').click(function () {
+        // Store Sale in database
+        function storeSale(success) {
             // Mengambil data transaksi dari form
-            const cash = $('#cash').val();
+            let cash = $('#cash').val();
             const discount = $('#discount').val()
             const total = $('#total').val();
-            const change = $('#change').val();
+            let change = $('#change').val();
+            const is_success = Number(success);
+
+            // Validasi jika cancel transaksi
+            if(!is_success) {
+                cash = 0;
+                change = 0;
+            }
 
             // Validasi jika cash < total
-            if (Number(cash) < Number(total)) {
+            if (is_success && Number(cash) < Number(total)) {
                 alert('Insufficient cash amount. Please enter a higher value.');
                 return; // Menghentikan eksekusi fungsi jika kondisi tidak terpenuhi
             }
@@ -364,6 +345,7 @@
             formData.append('discount', discount);
             formData.append('total', total);
             formData.append('change', change);
+            formData.append('is_success', is_success);
 
             // Setup CSRF
             $.ajaxSetup({
@@ -420,7 +402,10 @@
                         contentType: false,
                         success: function (response) {
                             // Mengupdate halaman atau menampilkan pesan sukses
-                            alert('Transaction details added successfully!');
+                            if(is_success)
+                                alert('Transaction details added successfully! (PAID)');
+                            else
+                                alert('Transaction details added successfully! (CANCELLED)');
                             location.reload();
                         },
                         error: function (error) {
@@ -432,6 +417,41 @@
                     alert('Failed to add transaction. Please try again.');
                 }
             });
+        }
+
+        $(document).on('input', 'input[name="quantity[]"]', function () {
+            // Menghitung discount dan total
+            let discount = 0;
+            let total = 0;
+            $('#items-container tr').each(function () {
+                const quantity = $(this).find('input[name="quantity[]"]').val();
+                const price = $(this).find('input[name="medicine_name[]"]').data('price');
+                const itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
+                const subtotal = quantity * price * (1 - itemDiscount);
+                total += subtotal;
+                discount += quantity * price * itemDiscount;
+            });
+
+            // Mengupdate nilai discount dan total
+            $('#discount').val(discount);
+            $('#total').val(total);
+        });
+
+        // Menghitung kembalian
+        $(document).on('input', '#cash', function () {
+            const cash = $(this).val();
+            const total = parseFloat($('#total').val());
+            const change = cash - total;
+
+            $('#change').val(change);
+        });
+
+        $('#pay-btn').click(function(){
+            storeSale(true);
+        });
+
+        $('#cancel-btn').click(function(){
+            storeSale(false);
         });
 
         $('#reset-transaction-btn').click(function(){
