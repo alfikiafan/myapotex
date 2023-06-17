@@ -7,7 +7,7 @@ $(document).ready(function () {
         newRow.find('input[name="medicine_name[]"]').autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '{{ route("sales.search") }}',
+                    url: '/sales/search',
                     dataType: 'json',
                     data: {
                         q: request.term
@@ -43,8 +43,7 @@ $(document).ready(function () {
         itemsContainer.append(newRow);
         updateRowNumbers();
 
-        const hiddenElement = $('.ui-helper-hidden-accessible');
-        hiddenElement.remove();
+        $('.ui-helper-hidden-accessible').remove();
     });
 
     // Delete Row Button
@@ -109,7 +108,7 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '{{ route("sales.store") }}',
+            url: '/sales/store',
             method: 'POST',
             data: formData,
             processData: false,
@@ -147,7 +146,7 @@ $(document).ready(function () {
                 }
 
                 $.ajax({
-                    url: '{{ route("detailsales.store", ":sale_id") }}'.replace(':sale_id', saleId),
+                    url: '/detailsales/store/' + saleId,
                     method: 'POST',
                     data: detailFormData,
                     processData: false,
