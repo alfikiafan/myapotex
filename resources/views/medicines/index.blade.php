@@ -1,3 +1,14 @@
+@php
+// move this to controller
+function sortDir($direction){
+    $directions = [
+        '' => 'asc',
+        'asc' => 'desc',
+        'desc' => ''
+    ];
+    return $directions[$direction];
+}
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -50,9 +61,30 @@
                       <th class="text-secondary text-xs font-weight-semibold">Name</th>
                       <th class="text-secondary text-xs font-weight-semibold">Brand</th>
                       <th class="text-secondary text-xs font-weight-semibold">Category</th>
-                      <th class="text-secondary text-xs font-weight-semibold">Quantity</th>
-                      <th class="text-secondary text-xs font-weight-semibold">Discount</th>
-                      <th class="text-secondary text-xs font-weight-semibold">Price</th>
+                      <th class="text-secondary text-xs font-weight-semibold">
+                          <a href="{{route('medicines.index', array_merge(request()->except('qty'),['qty'=>sortDir(request('qty'))]))}}">
+                              <span>Quantity</span>
+                              @if(request('qty')!=='')
+                                  <i class="fa fa-sort-amount-{{request('qty')}}" aria-hidden="true"></i>
+                              @endif
+                          </a>
+                      </th>
+                      <th class="text-secondary text-xs font-weight-semibold">
+                          <a href="{{route('medicines.index', array_merge(request()->except('disc'),['disc'=>sortDir(request('disc'))]))}}">
+                              <span>Discount</span>
+                              @if(request('disc')!=='')
+                                  <i class="fa fa-sort-amount-{{request('disc')}}" aria-hidden="true"></i>
+                              @endif
+                          </a>
+                      </th>
+                      <th class="text-secondary text-xs font-weight-semibold">
+                          <a href="{{route('medicines.index', array_merge(request()->except('price'),['price'=>sortDir(request('price'))]))}}">
+                              <span>Price</span>
+                              @if(request('price')!=='')
+                                  <i class="fa fa-sort-amount-{{request('price')}}" aria-hidden="true"></i>
+                              @endif
+                          </a>
+                      </th>
                         @can('admin')
                             <th class="text-secondary text-xs font-weight-semibold">Action</th>
                         @endcan
