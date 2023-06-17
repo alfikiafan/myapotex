@@ -130,7 +130,7 @@
                         </div>
                         <div class="ms-auto d-flex">
                             <div class="me-4">
-                                <h6 class="font-weight-semibold text-m mb-0">ID Transaction: <span id="newId"></span></h6>
+                                <h6 class="font-weight-semibold text-m mb-0">ID Transaction: <span>{{ $newId }}</span></h6>
                             </div>
                             <a href="">
                                 <button type="button" id="reset-transaction-btn" class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 me-2">
@@ -232,19 +232,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        // Nilai ID
-        const lastId = "{{ $sales->max('id') }}";
-        let newId;
-
-        if (lastId > 0) {
-            const lastIdNumber = parseInt(lastId.substr(1));
-            const newIdNumber = lastIdNumber + 1;
-            newId = `S${newIdNumber.toString().padStart(4, "0")}`;
-        } else {
-            newId = "S0001";
-        }
-        $('#newId').text(newId);
-
         // Add Item Button
         $('#add-item-btn').click(function () {
             const newRow = $('#new-row').clone().removeAttr('id').show();
