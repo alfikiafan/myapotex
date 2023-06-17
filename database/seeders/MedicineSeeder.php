@@ -281,6 +281,14 @@ class MedicineSeeder extends Seeder
             'quantity' => 35,
             'discount' => 0,
             'price' => 15000,
-        ]);        
+        ]);
+        Medicine::create([
+            'name' => 'Paracetamol',
+            'brand' => 'Oskadon',
+            'category' => 'Kapsul',
+            'quantity' => 100,
+            'discount' => 0.2,
+            'price' => 23000,
+        ]);
     }
 }
