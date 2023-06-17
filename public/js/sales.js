@@ -42,6 +42,8 @@ $(document).ready(function () {
 
         itemsContainer.append(newRow);
         updateRowNumbers();
+
+        $('.ui-helper-hidden-accessible').remove();
     });
 
     // Delete Row Button
