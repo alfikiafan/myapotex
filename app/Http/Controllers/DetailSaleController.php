@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\DetailSale;
 use App\Models\Sale;
 use App\Models\Medicine;
+use Illuminate\View\View;
 
 
 class DetailSaleController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $saleId = $request->input('sale_id');
         $is_success = $request->input('is_success');
@@ -19,6 +21,10 @@ class DetailSaleController extends Controller
         $prices = $request->input('price');
         $discounts = $request->input('discount');
         $subtotals = $request->input('subtotal');
+
+        // Var to make sure database is correct
+        $totalPrice = 0;
+        $totalDiscount = 0;
 
         // Check stock
         $allStockOk = true;
@@ -35,6 +41,11 @@ class DetailSaleController extends Controller
         }
 
         if(!$allStockOk){
+            $sale = Sale::find($saleId);
+            $sale->is_success = 0;
+            $sale->change = 0;
+            $sale->cash = 0;
+            $sale->save();
             return response()->json(['message' => $stockMessage,'status' => 'error']);
         }
 
@@ -47,17 +58,48 @@ class DetailSaleController extends Controller
             $detailSale->price = $prices[$i];
             $detailSale->discount = $discounts[$i];
             $detailSale->subtotal = $subtotals[$i];
+            $totalPrice += $subtotals[$i];
+            $totalDiscount += $discounts[$i];
 
             $detailSale->save();
-            if ($is_success) {
-                $meds = Medicine::find($detailSale->medicine_id);
+        }
+
+        // Update total price, discount, cash, change
+        if($is_success){
+            $isWeird = false;
+            $sale = Sale::find($saleId);
+
+            if($sale->total != $totalPrice){
+                $sale->total = $totalPrice;
+                $isWeird = true;
+            }
+
+            if($sale->discount != $totalDiscount){
+                $sale->discount = $totalDiscount;
+                $isWeird = true;
+            }
+
+            if($sale->cash < $totalPrice) {
+                $sale->is_success = 0;
+                $sale->change = 0;
+                $sale->cash = 0;
+                $sale->save();
+                return response()->json(['message' => 'HAYO NGECIT']);
+            }
+        }
+
+        // Decrease medicine if it's 100% sure
+        if ($is_success) {
+            for($i = 0; $i < count($medicineIds); $i++){
+                $meds = Medicine::find($medicineIds[$i]);
                 $meds->decrement('quantity', $quantities[$i]);
             }
         }
+
         return response()->json(['message' => 'Transaction details added successfully!'. ($is_success? ' (PAID) ':' (CANCELLED) ')]);
     }
 
-    public function show(Sale $sale, Request $request)
+    public function show(Sale $sale, Request $request): View
     {
         $search = $request->input('search');
 
