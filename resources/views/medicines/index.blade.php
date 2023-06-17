@@ -71,24 +71,24 @@ function sortQueryBuilder($key){
                       <th class="text-secondary text-xs font-weight-semibold">Name</th>
                       <th class="text-secondary text-xs font-weight-semibold">Brand</th>
                       <th class="text-secondary text-xs font-weight-semibold">Category</th>
-                      <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', sortQueryBuilder('qty'))}}">
+                      <th class="text-xs font-weight-semibold">
+                          <a class="text-secondary" href="{{route('medicines.index', sortQueryBuilder('qty'))}}">
                               <span>Quantity</span>
                               @if(request('qty')!=='')
                                   <i class="fa fa-sort-amount-{{request('qty')}}" aria-hidden="true"></i>
                               @endif
                           </a>
                       </th>
-                      <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', sortQueryBuilder('disc'))}}">
+                      <th class="text-xs font-weight-semibold">
+                          <a class="text-secondary" href="{{route('medicines.index', sortQueryBuilder('disc'))}}">
                               <span>Discount</span>
                               @if(request('disc')!=='')
                                   <i class="fa fa-sort-amount-{{request('disc')}}" aria-hidden="true"></i>
                               @endif
                           </a>
                       </th>
-                      <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index',sortQueryBuilder('price'))}}">
+                      <th class="text-xs font-weight-semibold">
+                          <a class="text-secondary" href="{{route('medicines.index',sortQueryBuilder('price'))}}">
                               <span>Price</span>
                               @if(request('price')!=='')
                                   <i class="fa fa-sort-amount-{{request('price')}}" aria-hidden="true"></i>
@@ -103,22 +103,20 @@ function sortQueryBuilder($key){
                   <tbody>
                   @foreach ($medicines as $medicine)
                   <tr>
-                    <td class="text-xs ps-4">{{ $medicine->id }}</td>
-                    <td class="text-xs ps-4">{{ $medicine->name }}</td>
-                    <td class="text-xs ps-4">{{ $medicine->brand }}</td>
-                    <td class="text-xs ps-4">{{ $medicine->category }}</td>
-                    <td class="text-xs ps-4">{{ $medicine->quantity }}</td>
-                    <td class="text-xs ps-4">{{ number_format($medicine->discount * 100, 0) }}%</td>
-                    <td class="text-xs ps-4 text-end d-flex flex-row justify-content-between">
-                        <div class="p-2">Rp</div>
-                        <div class="p-2 text-end">
+                    <td class="text-xs ps-3">{{ $medicine->id }}</td>
+                    <td class="text-xs ps-3">{{ $medicine->name }}</td>
+                    <td class="text-xs ps-3">{{ $medicine->brand }}</td>
+                    <td class="text-xs ps-3">{{ $medicine->category }}</td>
+                    <td class="text-xs ps-3">{{ $medicine->quantity }}</td>
+                    <td class="text-xs ps-3">{{ number_format($medicine->discount * 100, 0) }}%</td>
+                    <td class="text-xs ps-3 py-3 d-flex flex-row justify-content-between">
+                        <div class="pr-3">Rp</div>
+                        <div class="pe-4 text-end">
                          {{ number_format($medicine->price, 2, ',', '.') }}
                         </div>
-                        <div></div>
                     </td>
                       @can('admin')
-                        <td class="ps-4">
-
+                        <td class="ps-3">
                           <div class="d-flex align-items-center">
                             <a href="{{ route('medicines.edit', $medicine) }}">
                               <button type="button" class="btn btn-sm btn-primary mb-0 me-1">

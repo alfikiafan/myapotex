@@ -42,10 +42,10 @@
                   <tbody>
                   @foreach ($detailSales as $detailSale)
                   <tr>
-                  <td class="text-xs ps-4">{{ $detailSale->id }}</td>
-                  <td class="text-xs ps-4">{{ $detailSale->medicine_id }}</td>
-                  <td class="text-xs ps-4">{{ $detailSale->medicine_name }}</td>
-                  <td class="text-xs ps-4">{{ $detailSale->quantity }}</td>
+                  <td class="text-xs ps-3">{{ $detailSale->id }}</td>
+                  <td class="text-xs ps-3">{{ $detailSale->medicine_id }}</td>
+                  <td class="text-xs ps-3">{{ $detailSale->medicine_name }}</td>
+                  <td class="text-xs ps-3">{{ $detailSale->quantity }}</td>
                   <td class="text-xs ps-4 text-end d-flex flex-row justify-content-between">
                     <div class="p-2">Rp</div>
                     <div class="p-2 text-end">
@@ -53,7 +53,7 @@
                     </div>
                     <div></div>
                   </td>
-                  <td class="text-xs ps-4">{{ number_format($detailSale->discount * 100, 0) }} % </td>
+                  <td class="text-xs ps-3">{{ number_format($detailSale->discount * 100, 0) }} % </td>
                   <td class="text-xs ps-4 text-end d-flex flex-row justify-content-between">
                     <div class="p-2">Rp</div>
                     <div class="p-2 text-end">

@@ -55,18 +55,18 @@
                   <tbody>
                   @foreach ($users as $user)
                   <tr>
-                    <td class="text-xs ps-4">{{ $user->id }}</td>
-                    <td class="text-xs ps-4">{{ $user->name }}</td>
-                    <td class="text-xs ps-4">{{ $user->email }}</td>
-                    <td class="text-xs ps-4">
+                    <td class="text-xs ps-3">{{ $user->id }}</td>
+                    <td class="text-xs ps-3">{{ $user->name }}</td>
+                    <td class="text-xs ps-3">{{ $user->email }}</td>
+                    <td class="text-xs ps-3">
                       @if ($user->role == 'administrator')
                         <div class="badge badge-lg badge-success"> {{ $user->role }}</div>
                       @else
                         <div class="badge badge-lg badge-primary"> {{ $user->role }}</div>
                       @endif
                     </td>
-                    <td class="text-xs ps-4">{{ $user->joining_date }}</td>
-                    <td class="ps-4">
+                    <td class="text-xs ps-3">{{ $user->joining_date }}</td>
+                    <td class="ps-3">
                       <div class="d-flex align-items-center">
                         {{-- <a href="{{ route('accounts.edit', $user) }}">
                           <button type="button" class="btn btn-sm btn-primary mb-0 me-1">

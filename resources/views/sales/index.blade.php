@@ -51,10 +51,10 @@
                                     <tbody>
                                     @foreach ($sales as $sale)
                                         <tr>
-                                            <td class="text-xs ps-4">{{ $sale->id }}</td>
-                                            <td class="text-xs ps-4">{{ $sale->created_at }}</td>
-                                            <td class="text-xs ps-4">{{ $sale->cashier->name }}</td>
-                                            <td class="text-xs ps-4">
+                                            <td class="text-xs ps-3">{{ $sale->id }}</td>
+                                            <td class="text-xs ps-3">{{ $sale->created_at }}</td>
+                                            <td class="text-xs ps-3">{{ $sale->cashier->name }}</td>
+                                            <td class="text-xs ps-3">
                                                 <div class="d-flex justify-content-between">
 
                                                     <span>Rp</span>
@@ -63,14 +63,14 @@
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td class="text-xs ps-4">
+                                            <td class="text-xs ps-3">
                                                 @if($sale->is_success)
                                                     <div class="badge badge-lg badge-success"><span class="fa fa-check-circle" aria-hidden="true"></span> Success</div>
                                                 @else
                                                     <div class="badge badge-lg badge-danger"><span class="fa fa-times-circle" aria-hidden="true"></span> Cancelled</div>
                                                 @endif
                                             </td>
-                                            <td class="ps-4">
+                                            <td class="ps-3">
                                                 <div class="d-flex align-items-center">
                                                     <a href="{{ route('sales.show', $sale) }}">
                                                         <button type="button" class="btn btn-sm btn-primary mb-0 me-1">
@@ -154,7 +154,7 @@
 
                             </tbody>
                             <tr id="new-row" style="display: none;">
-                                <td class="items-no ps-4"></td>
+                                <td class="items-no ps-3"></td>
                                 <td class="medicine-id"></td>
                                 <td class="medicine-data">
                                     <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>

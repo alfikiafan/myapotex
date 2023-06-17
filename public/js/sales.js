@@ -16,13 +16,11 @@ $(document).ready(function () {
     }
 
     const ajax_meds_select = function (newRow, event, ui ) {
-
         const medicineInput = newRow.find('.autocomplete-medicine');
         medicineInput.val(ui.item.label);
         medicineInput.attr('data-id', ui.item.id);
         medicineInput.attr('data-discount', ui.item.discount);
         medicineInput.attr('data-price', ui.item.price);
-
         newRow.find('.medicine-id').text(ui.item.id);
         newRow.find('.discount').text((ui.item.discount * 100) + '%');
         newRow.find('.price').text('Rp' + ui.item.price);
@@ -115,7 +113,7 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '/sales', //🗿
+            url: '/sales',
             method: 'POST',
             data: formData,
             processData: false,
@@ -157,7 +155,7 @@ $(document).ready(function () {
                 }
 
                 $.ajax({
-                    url: '/sales/' + saleId, // 🗿
+                    url: '/sales/' + saleId,
                     method: 'POST',
                     data: detailFormData,
                     processData: false,

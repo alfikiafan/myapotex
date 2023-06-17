@@ -27,12 +27,12 @@ Route::redirect('/home', '/')->middleware('auth');
 
 
 Route::middleware('auth')->group(function () {
-    // Rute Dashboard
+    // Rute dashboard
     Route::redirect('/', '/dashboard');
     Route::get('/dashboard', [UserController::class, 'showDashboard'])->name('sessions.index');
     
 
-    // Rute Medicine
+    // Rute medicine
     Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
 
     Route::middleware('administrator')->group(function () {
@@ -43,41 +43,31 @@ Route::middleware('auth')->group(function () {
         Route::delete('/medicines/{medicine}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
     });
 
-    // Rute Accounts
+    // Rute accounts
     Route::middleware('administrator')->group(function () {
         Route::get('/accounts', [UserController::class, 'index'])->name('accounts.index');
         Route::post('/accounts', [UserController::class, 'store'])->name('accounts.store');
         Route::get('/accounts/create', [UserController::class, 'create'])->name('accounts.create');
-        // Route::get('/accounts/{user}/edit', [UserController::class, 'edit'])->name('accounts.edit');
-        // Route::put('/accounts/{user}', [UserController::class, 'update'])->name('accounts.update');
         Route::delete('/accounts/{user}', [UserController::class, 'destroy'])->name('accounts.destroy');
     });
 
-    // Rute sales/sell
+    // Rute sales
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/search', [SaleController::class, 'search'])->name('sales.search');
     
+    // sales admin
     Route::middleware('administrator')->group(function () {
         Route::get('/sales/{sale}', [DetailSaleController::class, 'show'])->name('sales.show');
     });
 
+    // sales kasir
     Route::middleware('cashier')->group(function () {
         Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
         Route::post('/sales/{sale}', [DetailSaleController::class, 'store'])->name('detailsales.store');
     });
 
-    // Rute Profile
+    // Rute profil
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.index');
     Route::get('/profile/{user}/edit', [UserController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile/{user}', [UserController::class, 'updateProfile'])->name('profile.update');
 });
-
-
-// Rute sementara
-// Route::get('/dashboard', function () {
-//     return redirect()->route('medicines.index');
-// })->name('dashboard');
-
-// Route::get('/logout', function () {
-//     return redirect()->route('medicines.index');
-// })->name('logout');
