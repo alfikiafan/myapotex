@@ -1,3 +1,14 @@
+@php
+// move this to controller
+function sortQty($direction){
+    $directions = [
+        '' => 'asc',
+        'asc' => 'desc',
+        'desc' => ''
+    ];
+    return $directions[$direction];
+}
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -50,7 +61,14 @@
                       <th class="text-secondary text-xs font-weight-semibold">Name</th>
                       <th class="text-secondary text-xs font-weight-semibold">Brand</th>
                       <th class="text-secondary text-xs font-weight-semibold">Category</th>
-                      <th class="text-secondary text-xs font-weight-semibold">Quantity</th>
+                      <th class="text-secondary text-xs font-weight-semibold">
+                          <a href="{{route('medicines.index', array_merge(request()->except('qty'),['qty'=>sortQty(request('qty'))]))}}">
+                              <span>Quantity</span>
+                              @if(request('qty')!=='')
+                                  <i class="fa fa-sort-amount-{{request('qty')}}" aria-hidden="true"></i>
+                              @endif
+                          </a>
+                      </th>
                       <th class="text-secondary text-xs font-weight-semibold">Discount</th>
                       <th class="text-secondary text-xs font-weight-semibold">Price</th>
                         @can('admin')
