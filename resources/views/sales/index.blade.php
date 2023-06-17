@@ -232,10 +232,11 @@
 </div>
 <script>
     $(document).ready(function () {
-        // Add Item Button
-        $('#add-item-btn').click(function () {
+        const itemsContainer = $('#items-container');
+        const addItem = $('#add-item-btn');
+        addItem.click(function () {
             const newRow = $('#new-row').clone().removeAttr('id').show();
-            newRow.find('td:first').text($('#items-container tr').length-1);
+            newRow.find('td:first').text(itemsContainer.find('tr').length - 1);
             newRow.find('input[name="medicine_name[]"]').autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -272,7 +273,7 @@
                 updateRowNumbers();
             });
 
-            $('#items-container').append(newRow);
+            itemsContainer.append(newRow);
             updateRowNumbers();
         });
 
@@ -286,13 +287,13 @@
         $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
             if (e.keyCode === 13) {
                 e.preventDefault();
-                $('#add-item-btn').click();
+                addItem.click();
             }
         });
 
         // Update row numbers
         function updateRowNumbers() {
-            $('#items-container tr').each(function (index) {
+            itemsContainer.find('tr').each(function (index) {
                 $(this).find('td:first').text(index + 1);
             });
         }
@@ -311,7 +312,7 @@
             const cash = $('#cash').val();
             const discount = $('#discount').val();
             const total = $('#total').val();
-            let change = $('#change').val();
+            const change = $('#change').val();
             const is_success = Number(success);
 
             if (!is_success) {
@@ -347,19 +348,19 @@
                     const saleId = response.sale_id;
                     const isSuccess = response.is_success;
 
-                    const medicineIds = $('#items-container .medicine-id').map(function (_, el) {
+                    const medicineIds = itemsContainer.find('.medicine-id').map(function (_, el) {
                         return el.textContent;
                     });
-                    const quantities = $('#items-container .quantity').map(function (_, el) {
+                    const quantities = itemsContainer.find('.quantity').map(function (_, el) {
                         return Number(el.value);
                     });
-                    const prices = $('#items-container .price').map(function (_, el) {
+                    const prices = itemsContainer.find('.price').map(function (_, el) {
                         return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
                     }).get();
-                    const discounts = $('#items-container input[name="medicine_name[]"]').map(function () {
+                    const discounts = itemsContainer.find('input[name="medicine_name[]"]').map(function () {
                         return parseFloat($(this).data('discount'));
                     }).get();
-                    const subtotals = $('#items-container .subtotal').map(function (_, el) {
+                    const subtotals = itemsContainer.find('.subtotal').map(function (_, el) {
                         return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
                     }).get();
 
@@ -385,7 +386,7 @@
                             if (response.status === 'nostock') {
                                 alert('One or more medicine stock is empty.');
                                 response.message.forEach(function (item) {
-                                    alert(item+'\n');
+                                    alert(item + '\n');
                                 });
                                 return;
                             }
@@ -406,7 +407,7 @@
         $(document).on('input', 'input[name="quantity[]"]', function () {
             let discount = 0;
             let total = 0;
-            $('#items-container tr').each(function () {
+            itemsContainer.find('tr').each(function () {
                 const quantity = $(this).find('input[name="quantity[]"]').val();
                 const price = $(this).find('input[name="medicine_name[]"]').data('price');
                 const itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
@@ -436,9 +437,10 @@
         });
 
         $('#reset-transaction-btn').click(function () {
-            $('#items-container').empty();
+            itemsContainer.empty();
         });
     });
 </script>
+
 @endsection
 @endcan
