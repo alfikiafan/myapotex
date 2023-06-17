@@ -10,17 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class SessionsController extends Controller
 {
-    public function index(): View|RedirectResponse
-    {
-        if(auth()->user()->can('admin')){
-            return view('sessions.index');
-        } else if(auth()->user()->can('cashier')){
-            return view('sessions.index');
-        }
-
-        return redirect('/');
-    }
-
     public function create(): View
     {
         return view('sessions.create');

@@ -9,7 +9,11 @@
                         <div class="d-sm-flex align-items-center mb-3">
                             <div>
                                 <h6 class="font-weight-semibold text-lg mb-0">Dashboard</h6>
+                                @can('admin')
+                                <p class="text-sm mb-sm-0">Admin Dashboard Page</p>
+                                @elsecan('cashier')
                                 <p class="text-sm mb-sm-0">Cashier Dashboard Page</p>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -114,4 +118,5 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
