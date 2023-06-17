@@ -1,42 +1,48 @@
 $(document).ready(function () {
     const itemsContainer = $('#items-container');
     const addItem = $('#add-item-btn');
+
+    const ajax_meds_search = function (request, response) {
+        $.ajax({
+            url: '/sales/search',
+            dataType: 'json',
+            data: {
+                q: request.term
+            },
+            success: function (data) {
+                response(data);
+            }
+        });
+    }
+
+    const ajax_meds_select = function (newRow, event, ui ) {
+
+        const medicineInput = newRow.find('.autocomplete-medicine');
+        medicineInput.val(ui.item.label);
+        medicineInput.attr('data-id', ui.item.id);
+        medicineInput.attr('data-discount', ui.item.discount);
+        medicineInput.attr('data-price', ui.item.price);
+
+        newRow.find('.medicine-id').text(ui.item.id);
+        newRow.find('.discount').text((ui.item.discount * 100) + '%');
+        newRow.find('.price').text('Rp' + ui.item.price);
+        updateSubtotal(newRow);
+    }
+
     addItem.click(function () {
         const newRow = $('#new-row').clone().removeAttr('id').show();
-        newRow.find('td:first').text(itemsContainer.find('tr').length - 1);
-        newRow.find('input[name="medicine_name[]"]').autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '/sales/search',
-                    dataType: 'json',
-                    data: {
-                        q: request.term
-                    },
-                    success: function (data) {
-                        response(data);
-                    }
-                });
-            },
+        newRow.find('.autocomplete-medicine').autocomplete({
+            source: ajax_meds_search,
             minLength: 3,
-            select: function (event, ui) {
-                const medicineInput = newRow.find('input[name="medicine_name[]"]');
-                medicineInput.val(ui.item.label);
-                medicineInput.attr('data-id', ui.item.id);
-                medicineInput.attr('data-discount', ui.item.discount);
-                medicineInput.attr('data-price', ui.item.price);
-                newRow.find('td:nth-child(2)').text(ui.item.id);
-                newRow.find('td:nth-child(5)').text((ui.item.discount * 100) + '%');
-                newRow.find('td:nth-child(6)').text('Rp' + ui.item.price);
-                updateSubtotal(newRow);
-            },
+            select: ajax_meds_select.bind(this, newRow),
             autofocus: true
         });
 
-        newRow.find('input[name="quantity[]"]').on('input', function () {
+        newRow.find('.item-quantity input').on('input', function () {
             updateSubtotal(newRow);
         });
         newRow.find('.delete-row').click(function () {
-            $(this).closest('tr').remove();
+            newRow.remove();
             updateRowNumbers();
         });
 
@@ -53,7 +59,7 @@ $(document).ready(function () {
     });
 
     // Add Row on Enter
-    $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
+    $(document).on('keydown', '.item-quantity input', function (e) {
         if (e.keyCode === 13) {
             e.preventDefault();
             addItem.click();
@@ -69,19 +75,20 @@ $(document).ready(function () {
 
     // Update Subtotal
     function updateSubtotal(row) {
-        const quantity = row.find('input[name="quantity[]"]').val();
-        const discount = row.find('input[name="medicine_name[]"]').data('discount');
-        const price = row.find('input[name="medicine_name[]"]').data('price');
+        const quantity = row.find('.item-quantity input').val();
+        const discount = row.find('.medicine-data input').data('discount');
+        const price = row.find('.medicine-data input').data('price');
         const subtotal = quantity * price * (1 - discount);
-        row.find('td:nth-child(7)').text(`Rp${subtotal.toFixed(2)}`);
+
+        row.find('.subtotal').text(`Rp${subtotal.toFixed(2)}`);
     }
 
     // Store Sale in database
     function storeSale(success) {
-        const cash = $('#cash').val();
+        let  cash = $('#cash').val();
         const discount = $('#discount').val();
         const total = $('#total').val();
-        const change = $('#change').val();
+        let change = $('#change').val();
         const is_success = Number(success);
 
         if (!is_success) {
@@ -99,7 +106,7 @@ $(document).ready(function () {
         formData.append('discount', discount);
         formData.append('total', total);
         formData.append('change', change);
-        formData.append('is_success', is_success);
+        formData.append('is_success', is_success.toString());
 
         $.ajaxSetup({
             headers: {
@@ -108,7 +115,7 @@ $(document).ready(function () {
         });
 
         $.ajax({
-            url: '/sales/store',
+            url: '/sales', //🗿
             method: 'POST',
             data: formData,
             processData: false,
@@ -120,18 +127,18 @@ $(document).ready(function () {
                 const medicineIds = itemsContainer.find('.medicine-id').map(function (_, el) {
                     return el.textContent;
                 });
-                const quantities = itemsContainer.find('.quantity').map(function (_, el) {
+                const quantities = itemsContainer.find('.item-quantity input').map(function (_, el) {
                     return Number(el.value);
                 });
-                const prices = itemsContainer.find('.price').map(function (_, el) {
-                    return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
-                }).get();
-                const discounts = itemsContainer.find('input[name="medicine_name[]"]').map(function () {
-                    return parseFloat($(this).data('discount'));
-                }).get();
+                const prices = itemsContainer.find('.medicine-data input').map(function (_, el) {
+                    return Number(el.getAttribute('data-price'));
+                });
+                const discounts = itemsContainer.find('.medicine-data input').map(function (_, el) {
+                    return Number(el.getAttribute('data-discount'));
+                });
                 const subtotals = itemsContainer.find('.subtotal').map(function (_, el) {
-                    return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
-                }).get();
+                    return prices[_] * quantities[_] * (1 - discounts[_]);
+                });
 
                 const detailFormData = new FormData();
                 detailFormData.append('sale_id', saleId);
@@ -144,9 +151,13 @@ $(document).ready(function () {
                     detailFormData.append('discount[]', discounts[i]);
                     detailFormData.append('subtotal[]', subtotals[i]);
                 }
+                console.log('saleid' + saleId);
+                for (var pair of detailFormData.entries()) {
+                    console.log(pair[0]+ ', ' + pair[1]);
+                }
 
                 $.ajax({
-                    url: '/detailsales/store/' + saleId,
+                    url: '/sales/' + saleId, // 🗿
                     method: 'POST',
                     data: detailFormData,
                     processData: false,
@@ -163,12 +174,13 @@ $(document).ready(function () {
                         location.reload();
                     },
                     error: function (error) {
-                        alert('Failed to add transaction details. Please try again.');
+                        alert('(detailsale/store) Failed to add transaction details. Please try again.');
                     }
                 });
             },
             error: function (error) {
-                alert('Failed to add transaction. Please try again.');
+                console.log(error);
+                alert('(sale/store) Failed to add transaction. Please try again.');
             }
         });
     }

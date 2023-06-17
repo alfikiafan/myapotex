@@ -154,12 +154,12 @@
 
                             </tbody>
                             <tr id="new-row" style="display: none;">
-                                <td class="ps-4"></td>
+                                <td class="items-no ps-4"></td>
                                 <td class="medicine-id"></td>
-                                <td>
+                                <td class="medicine-data">
                                     <input type="text" name="medicine_name[]" class="form-control autocomplete-medicine" data-discount="" data-price="" required>
                                 </td>
-                                <td>
+                                <td class="item-quantity">
                                     <input type="number" name="quantity[]" class="quantity form-control" min="0" required>
                                 </td>
                                 <td class="discount"></td>
