@@ -77,7 +77,14 @@ function sortDir($direction){
                               @endif
                           </a>
                       </th>
-                      <th class="text-secondary text-xs font-weight-semibold">Price</th>
+                      <th class="text-secondary text-xs font-weight-semibold">
+                          <a href="{{route('medicines.index', array_merge(request()->except('price'),['price'=>sortDir(request('price'))]))}}">
+                              <span>Price</span>
+                              @if(request('price')!=='')
+                                  <i class="fa fa-sort-amount-{{request('price')}}" aria-hidden="true"></i>
+                              @endif
+                          </a>
+                      </th>
                         @can('admin')
                             <th class="text-secondary text-xs font-weight-semibold">Action</th>
                         @endcan

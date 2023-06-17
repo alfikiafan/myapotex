@@ -14,6 +14,7 @@ class MedicineController extends Controller
         $search = $request->input('search');
         $sortQty = $request->input('qty')===''?null:$request->input('qty');
         $sortDisc = $request->input('disc')===''?null:$request->input('disc');
+        $sortPrice = $request->input('price')===''?null:$request->input('price');
 
         $medicines = Medicine::query();
 
@@ -33,6 +34,10 @@ class MedicineController extends Controller
 
         if($sortDisc){
             $medicines = $medicines->orderBy('discount', $sortDisc);
+        }
+
+        if($sortPrice){
+            $medicines = $medicines->orderBy('price', $sortPrice);
         }
 
         $medicines = $medicines->paginate(80);
