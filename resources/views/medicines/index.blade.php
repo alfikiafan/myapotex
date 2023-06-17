@@ -1,12 +1,19 @@
 @php
-// move this to controller
-function sortDir($direction){
+// move this to somewhere not there
+function sortQueryBuilder($key){
+    // Directions of orderBy function
     $directions = [
         '' => 'asc',
         'asc' => 'desc',
         'desc' => ''
     ];
-    return $directions[$direction];
+
+    $def = request()->except($key); // default request except the one we want to change
+    $dir = request($key); // get the direction of the request
+    $newDir = $directions[$dir]; // get the new direction
+    $newQuery = $newDir === ''? []:[$key=>$newDir]; // if the new direction is empty, then we don't need to add it to the query
+
+    return array_merge($def,$newQuery); // merge the default query with the new query [] if the new direction is empty
 }
 @endphp
 @extends('layouts.app')
@@ -65,7 +72,7 @@ function sortDir($direction){
                       <th class="text-secondary text-xs font-weight-semibold">Brand</th>
                       <th class="text-secondary text-xs font-weight-semibold">Category</th>
                       <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', array_merge(request()->except('qty'),['qty'=>sortDir(request('qty'))]))}}">
+                          <a href="{{route('medicines.index', sortQueryBuilder('qty'))}}">
                               <span>Quantity</span>
                               @if(request('qty')!=='')
                                   <i class="fa fa-sort-amount-{{request('qty')}}" aria-hidden="true"></i>
@@ -73,7 +80,7 @@ function sortDir($direction){
                           </a>
                       </th>
                       <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', array_merge(request()->except('disc'),['disc'=>sortDir(request('disc'))]))}}">
+                          <a href="{{route('medicines.index', sortQueryBuilder('disc'))}}">
                               <span>Discount</span>
                               @if(request('disc')!=='')
                                   <i class="fa fa-sort-amount-{{request('disc')}}" aria-hidden="true"></i>
@@ -81,7 +88,7 @@ function sortDir($direction){
                           </a>
                       </th>
                       <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', array_merge(request()->except('price'),['price'=>sortDir(request('price'))]))}}">
+                          <a href="{{route('medicines.index',sortQueryBuilder('price'))}}">
                               <span>Price</span>
                               @if(request('price')!=='')
                                   <i class="fa fa-sort-amount-{{request('price')}}" aria-hidden="true"></i>
