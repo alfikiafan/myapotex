@@ -1,12 +1,19 @@
 @php
-// move this to controller
-function sortDir($direction){
+// move this to somewhere not there
+function sortQueryBuilder($key){
+    // Directions of orderBy function
     $directions = [
         '' => 'asc',
         'asc' => 'desc',
         'desc' => ''
     ];
-    return $directions[$direction];
+
+    $def = request()->except($key); // default request except the one we want to change
+    $dir = request($key); // get the direction of the request
+    $newDir = $directions[$dir]; // get the new direction
+    $newQuery = $newDir === ''? []:[$key=>$newDir]; // if the new direction is empty, then we don't need to add it to the query
+
+    return array_merge($def,$newQuery); // merge the default query with the new query [] if the new direction is empty
 }
 @endphp
 @extends('layouts.app')
@@ -31,12 +38,15 @@ function sortDir($direction){
                 <div class="ms-auto d-flex">
                   <form action="{{ route('medicines.index') }}" method="GET" class="me-3">
                     <div class="input-group input-group-sm ms-auto">
-                      <span class="input-group-text text-body" type="submit">
+                      <button class="input-group-text text-body" type="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                         </svg>
-                      </span>
-                      <input type="text" class="form-control form-control-sm" name="search" value="{{ request('search') }}" placeholder="Search">
+                      </button>
+                        @foreach(request()->except('search') as $key => $value)
+                            <input type="hidden" name="{{ $key }}" value="{{ $value }}"/>
+                        @endforeach
+                      <input type="text" class="form-control form-control-sm" name="search" value="{{ request('search') }}" placeholder="Search"/>
                     </div>
                   </form>
                     @can('admin')
@@ -62,7 +72,7 @@ function sortDir($direction){
                       <th class="text-secondary text-xs font-weight-semibold">Brand</th>
                       <th class="text-secondary text-xs font-weight-semibold">Category</th>
                       <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', array_merge(request()->except('qty'),['qty'=>sortDir(request('qty'))]))}}">
+                          <a href="{{route('medicines.index', sortQueryBuilder('qty'))}}">
                               <span>Quantity</span>
                               @if(request('qty')!=='')
                                   <i class="fa fa-sort-amount-{{request('qty')}}" aria-hidden="true"></i>
@@ -70,7 +80,7 @@ function sortDir($direction){
                           </a>
                       </th>
                       <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', array_merge(request()->except('disc'),['disc'=>sortDir(request('disc'))]))}}">
+                          <a href="{{route('medicines.index', sortQueryBuilder('disc'))}}">
                               <span>Discount</span>
                               @if(request('disc')!=='')
                                   <i class="fa fa-sort-amount-{{request('disc')}}" aria-hidden="true"></i>
@@ -78,7 +88,7 @@ function sortDir($direction){
                           </a>
                       </th>
                       <th class="text-secondary text-xs font-weight-semibold">
-                          <a href="{{route('medicines.index', array_merge(request()->except('price'),['price'=>sortDir(request('price'))]))}}">
+                          <a href="{{route('medicines.index',sortQueryBuilder('price'))}}">
                               <span>Price</span>
                               @if(request('price')!=='')
                                   <i class="fa fa-sort-amount-{{request('price')}}" aria-hidden="true"></i>
