@@ -130,7 +130,7 @@
                         </div>
                         <div class="ms-auto d-flex">
                             <div class="me-4">
-                                <h6 class="font-weight-semibold text-m mb-0">ID Transaction: <span id="newId"></span></h6>
+                                <h6 class="font-weight-semibold text-m mb-0">ID Transaction: <span>{{ $newId }}</span></h6>
                             </div>
                             <a href="">
                                 <button type="button" id="reset-transaction-btn" class="btn btn-sm btn-white btn-icon d-flex align-items-center mb-0 me-2">
@@ -232,23 +232,11 @@
 </div>
 <script>
     $(document).ready(function () {
-        // Nilai ID
-        const lastId = "{{ $sales->max('id') }}";
-        let newId;
-
-        if (lastId > 0) {
-            const lastIdNumber = parseInt(lastId.substr(1));
-            const newIdNumber = lastIdNumber + 1;
-            newId = `S${newIdNumber.toString().padStart(4, "0")}`;
-        } else {
-            newId = "S0001";
-        }
-        document.getElementById('newId').textContent = newId;
-
-        // Add Item Button
-        $('#add-item-btn').click(function () {
+        const itemsContainer = $('#items-container');
+        const addItem = $('#add-item-btn');
+        addItem.click(function () {
             const newRow = $('#new-row').clone().removeAttr('id').show();
-            newRow.find('td:first').text($('#items-container tr').length-1);
+            newRow.find('td:first').text(itemsContainer.find('tr').length - 1);
             newRow.find('input[name="medicine_name[]"]').autocomplete({
                 source: function (request, response) {
                     $.ajax({
@@ -264,10 +252,11 @@
                 },
                 minLength: 3,
                 select: function (event, ui) {
-                    newRow.find('input[name="medicine_name[]"]').val(ui.item.label);
-                    newRow.find('input[name="medicine_name[]"]').attr('data-id', ui.item.id);
-                    newRow.find('input[name="medicine_name[]"]').attr('data-discount', ui.item.discount);
-                    newRow.find('input[name="medicine_name[]"]').attr('data-price', ui.item.price);
+                    const medicineInput = newRow.find('input[name="medicine_name[]"]');
+                    medicineInput.val(ui.item.label);
+                    medicineInput.attr('data-id', ui.item.id);
+                    medicineInput.attr('data-discount', ui.item.discount);
+                    medicineInput.attr('data-price', ui.item.price);
                     newRow.find('td:nth-child(2)').text(ui.item.id);
                     newRow.find('td:nth-child(5)').text((ui.item.discount * 100) + '%');
                     newRow.find('td:nth-child(6)').text('Rp' + ui.item.price);
@@ -284,7 +273,7 @@
                 updateRowNumbers();
             });
 
-            $('#items-container').append(newRow);
+            itemsContainer.append(newRow);
             updateRowNumbers();
         });
 
@@ -298,13 +287,13 @@
         $(document).on('keydown', 'input[name="quantity[]"]', function (e) {
             if (e.keyCode === 13) {
                 e.preventDefault();
-                $('#add-item-btn').click();
+                addItem.click();
             }
         });
 
         // Update row numbers
         function updateRowNumbers() {
-            $('#items-container tr').each(function (index) {
+            itemsContainer.find('tr').each(function (index) {
                 $(this).find('td:first').text(index + 1);
             });
         }
@@ -315,31 +304,27 @@
             const discount = row.find('input[name="medicine_name[]"]').data('discount');
             const price = row.find('input[name="medicine_name[]"]').data('price');
             const subtotal = quantity * price * (1 - discount);
-            row.find('td:nth-child(7)').text('Rp' + subtotal.toFixed(2));
+            row.find('td:nth-child(7)').text(`Rp${subtotal.toFixed(2)}`);
         }
 
         // Store Sale in database
         function storeSale(success) {
-            // Mengambil data transaksi dari form
-            let cash = $('#cash').val();
-            const discount = $('#discount').val()
+            const cash = $('#cash').val();
+            const discount = $('#discount').val();
             const total = $('#total').val();
-            let change = $('#change').val();
+            const change = $('#change').val();
             const is_success = Number(success);
 
-            // Validasi jika cancel transaksi
-            if(!is_success) {
+            if (!is_success) {
                 cash = 0;
                 change = 0;
             }
 
-            // Validasi jika cash < total
             if (is_success && Number(cash) < Number(total)) {
                 alert('Insufficient cash amount. Please enter a higher value.');
-                return; // Menghentikan eksekusi fungsi jika kondisi tidak terpenuhi
+                return;
             }
 
-            // Membuat objek FormData dari form
             const formData = new FormData();
             formData.append('cash', cash);
             formData.append('discount', discount);
@@ -347,14 +332,12 @@
             formData.append('change', change);
             formData.append('is_success', is_success);
 
-            // Setup CSRF
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
-            // Mengirim data penjualan ke server menggunakan AJAX
             $.ajax({
                 url: '{{ route("sales.store") }}',
                 method: 'POST',
@@ -362,28 +345,25 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    // Mengambil ID penjualan & status penjualan dari respons
                     const saleId = response.sale_id;
                     const isSuccess = response.is_success;
 
-                    // Mengambil data detail penjualan dari form
-                    const medicineIds = $('#items-container .medicine-id').map(function (_,el) {
+                    const medicineIds = itemsContainer.find('.medicine-id').map(function (_, el) {
                         return el.textContent;
                     });
-                    const quantities = $('#items-container .quantity').map(function (_,el) {
+                    const quantities = itemsContainer.find('.quantity').map(function (_, el) {
                         return Number(el.value);
                     });
-                    const prices = $('#items-container .price').map(function (_, el) {
+                    const prices = itemsContainer.find('.price').map(function (_, el) {
                         return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
                     }).get();
-                    const discounts = $('#items-container input[name="medicine_name[]"]').map(function () {
+                    const discounts = itemsContainer.find('input[name="medicine_name[]"]').map(function () {
                         return parseFloat($(this).data('discount'));
                     }).get();
-                    const subtotals = $('#items-container .subtotal').map(function (_, el) {
+                    const subtotals = itemsContainer.find('.subtotal').map(function (_, el) {
                         return parseFloat($(el).text().replace('Rp', '').replace(',', ''));
                     }).get();
 
-                    // Membuat objek FormData untuk data detail penjualan
                     const detailFormData = new FormData();
                     detailFormData.append('sale_id', saleId);
                     detailFormData.append('is_success', isSuccess);
@@ -396,7 +376,6 @@
                         detailFormData.append('subtotal[]', subtotals[i]);
                     }
 
-                    // Mengirim data detail penjualan ke server menggunakan AJAX
                     $.ajax({
                         url: '{{ route("detailsales.store", ":sale_id") }}'.replace(':sale_id', saleId),
                         method: 'POST',
@@ -404,11 +383,10 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            // Mengupdate halaman atau menampilkan pesan sukses
-                            if(response.status ==='nostock'){
+                            if (response.status === 'nostock') {
                                 alert('One or more medicine stock is empty.');
                                 response.message.forEach(function (item) {
-                                    alert(item+'\n');
+                                    alert(item + '\n');
                                 });
                                 return;
                             }
@@ -427,10 +405,9 @@
         }
 
         $(document).on('input', 'input[name="quantity[]"]', function () {
-            // Menghitung discount dan total
             let discount = 0;
             let total = 0;
-            $('#items-container tr').each(function () {
+            itemsContainer.find('tr').each(function () {
                 const quantity = $(this).find('input[name="quantity[]"]').val();
                 const price = $(this).find('input[name="medicine_name[]"]').data('price');
                 const itemDiscount = $(this).find('input[name="medicine_name[]"]').data('discount');
@@ -439,12 +416,10 @@
                 discount += quantity * price * itemDiscount;
             });
 
-            // Mengupdate nilai discount dan total
             $('#discount').val(discount);
             $('#total').val(total);
         });
 
-        // Menghitung kembalian
         $(document).on('input', '#cash', function () {
             const cash = $(this).val();
             const total = parseFloat($('#total').val());
@@ -453,21 +428,19 @@
             $('#change').val(change);
         });
 
-        $('#pay-btn').click(function(){
+        $('#pay-btn').click(function () {
             storeSale(true);
         });
 
-        $('#cancel-btn').click(function(){
+        $('#cancel-btn').click(function () {
             storeSale(false);
         });
 
-        $('#reset-transaction-btn').click(function(){
-            const parentElement = document.getElementById("items-container");
-            while (parentElement.firstChild) {
-                parentElement.removeChild(parentElement.firstChild);
-            }
+        $('#reset-transaction-btn').click(function () {
+            itemsContainer.empty();
         });
     });
 </script>
+
 @endsection
 @endcan

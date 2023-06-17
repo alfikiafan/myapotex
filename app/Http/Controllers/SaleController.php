@@ -35,16 +35,19 @@ class SaleController extends Controller
         } else if(auth()->user()->can('cashier')){
             $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
             $medicines = Medicine::all();
-            return view('sales.index', compact('sales', 'medicines'));
+            $lastId = Sale::max('id');
+            $newId;
+            if ($lastId > 0) {
+                $lastIdNumber = intval(substr($lastId, 1));
+                $newIdNumber = $lastIdNumber + 1;
+                $newId = 'S' . str_pad($newIdNumber, 4, '0', STR_PAD_LEFT);
+            } else {
+                $newId = 'S0001';
+            }
+            return view('sales.index', compact('sales', 'medicines', 'newId'));
         } else{
             return redirect('/');
         }
-    }
-
-    public function create()
-    {
-        $medicines = Medicine::all();
-        return view('sales.create', compact('medicines'));
     }
 
     public function store(Request $request)
