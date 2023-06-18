@@ -1,3 +1,20 @@
+@php
+    // Hello, I'm from medicines/index.blade.php, please also move me somewhere not there
+    function sortQueryBuilder($key){
+            // Directions of orderBy function
+        $directions = [
+            '' => 'asc',
+            'asc' => 'desc',
+            'desc' => ''
+        ];
+        $def = request()->except($key); // default request except the one we want to change
+        $dir = request($key); // get the direction of the request
+        $newDir = $directions[$dir]; // get the new direction
+        $newQuery = $newDir === ''? []:[$key=>$newDir]; // if the new direction is empty, then we don't need to add it to the query
+
+        return array_merge($def,$newQuery); // merge the default query with the new query [] if the new direction is empty
+    }
+@endphp
 @extends('layouts.app')
 @can('admin')
     @section('content')
@@ -28,6 +45,9 @@
                                                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
                                                 </svg>
                                               </button>
+                                            @foreach(request()->except('search') as $key => $value)
+                                                <input type="hidden" name="{{ $key }}" value="{{ $value }}"/>
+                                            @endforeach
                                             <input type="text" class="form-control form-control-sm" name="search"
                                                    value="{{ request('search') }}" placeholder="Search">
                                         </div>
@@ -40,11 +60,39 @@
                                 <table class="table align-items-center mb-0">
                                     <thead class="bg-gray-100">
                                     <tr>
-                                        <th class="text-secondary text-xs font-weight-semibold">Sales ID</th>
-                                        <th class="text-secondary text-xs font-weight-semibold">Date</th>
+                                        <th class="text-xs font-weight-semibold">
+                                            <a class="text-secondary" href="{{route('sales.index', sortQueryBuilder('saleId'))}}">
+                                                <span>Sales ID</span>
+                                                @if(request('saleId')!=='')
+                                                    <i class="fa fa-sort-amount-{{request('saleId')}}" aria-hidden="true"></i>
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="text-xs font-weight-semibold">
+                                            <a class="text-secondary" href="{{route('sales.index', sortQueryBuilder('date'))}}">
+                                                <span>Date</span>
+                                                @if(request('date')!=='')
+                                                    <i class="fa fa-sort-amount-{{request('date')}}" aria-hidden="true"></i>
+                                                @endif
+                                            </a>
+                                        </th>
                                         <th class="text-secondary text-xs font-weight-semibold">Cashier</th>
-                                        <th class="text-secondary text-xs font-weight-semibold">Total Price</th>
-                                        <th class="text-secondary text-xs font-weight-semibold">Status</th>
+                                        <th class="text-xs font-weight-semibold">
+                                            <a class="text-secondary" href="{{route('sales.index', sortQueryBuilder('totalPrice'))}}">
+                                                <span>Total Price</span>
+                                                @if(request('totalPrice')!=='')
+                                                    <i class="fa fa-sort-amount-{{request('totalPrice')}}" aria-hidden="true"></i>
+                                                @endif
+                                            </a>
+                                        </th>
+                                        <th class="text-xs font-weight-semibold">
+                                            <a class="text-secondary" href="{{route('sales.index', sortQueryBuilder('status'))}}">
+                                                <span>Status</span>
+                                                @if(request('status')!=='')
+                                                    <i class="fa fa-sort-amount-{{request('status')}}" aria-hidden="true"></i>
+                                                @endif
+                                            </a>
+                                        </th>
                                         <th class="text-secondary text-xs font-weight-semibold">Action</th>
                                     </tr>
                                     </thead>
