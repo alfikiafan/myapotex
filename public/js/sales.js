@@ -168,7 +168,17 @@ $(document).ready(function () {
                             });
                             return;
                         }
+                        if (response.status === 'weird') {
+                            alert('Data manipulation detected');
+                            response.weirdMessage.forEach(function (item) {
+                                alert(item + '\n');
+                            });
+                            alert('Please don\'t do that again');
+                        }
                         alert(response.message);
+                        if (response.status === 'notenough') {
+                            return;
+                        }
                         location.reload();
                     },
                     error: function (error) {
