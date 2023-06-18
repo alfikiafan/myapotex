@@ -16,10 +16,16 @@ class SaleController extends Controller
     public function index() :View|RedirectResponse
     {
         if(auth()->user()->can('admin')){
-            $search = request()?->input('search');
+            $search = request()->input('search');
+            $saleId = request()->input('saleId');
+            $totalPrice = request()->input('totalPrice');
+            $date = request()->input('date');
+            $status = request()->input('status');
+
+            $sales = Sale::query();
 
             if ($search) {
-                $sales = Sale::with('cashier')
+                 $sales = Sale::with('cashier')
                     ->where('id', 'like', "%$search%")
                     ->orWhere('cashier_id', 'like', "%$search%")
                     ->orWhere('created_at', 'like', "%$search%")
@@ -27,10 +33,26 @@ class SaleController extends Controller
                     ->orWhereHas('cashier', function ($query) use ($search) {
                         $query->where('name', 'like', "%$search%")
                             ->orWhere('email', 'like', "%$search%");
-                    })->paginate(10);
-            } else {
-                $sales = Sale::paginate(10);
+                    });
             }
+            if($status){
+                $sales = $sales->orderBy('is_success', $status);
+            }
+
+            if($saleId){
+                $sales = $sales->orderBy('id', $saleId);
+            }
+
+            if($totalPrice){
+                $sales = $sales->orderBy('total', $totalPrice);
+            }
+
+            if($date){
+                $sales = $sales->orderBy('created_at', $date);
+            }
+
+            $sales = $sales->paginate(10);
+
             return view('sales.index', compact('sales'));
         } else if(auth()->user()->can('cashier')){
             $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
