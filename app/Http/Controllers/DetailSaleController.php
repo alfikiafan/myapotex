@@ -46,7 +46,7 @@ class DetailSaleController extends Controller
             $sale->change = 0;
             $sale->cash = 0;
             $sale->save();
-            return response()->json(['message' => $stockMessage,'status' => 'error']);
+            return response()->json(['message' => $stockMessage,'status' => 'nostock']);
         }
 
         // Simpan setiap detail penjualan
@@ -58,24 +58,37 @@ class DetailSaleController extends Controller
             $detailSale->price = $prices[$i];
             $detailSale->discount = $discounts[$i];
             $detailSale->subtotal = $subtotals[$i];
-            $totalPrice += $subtotals[$i];
-            $totalDiscount += $discounts[$i];
+
+            $meds = Medicine::find($medicineIds[$i]);
+            $medsPrice = $meds->price;
+            $medsDiscount = $medsPrice * $meds->discount;
+            $totalPrice += $quantities[$i] * ($medsPrice - $medsDiscount);
+            $totalDiscount += $quantities[$i] * $medsDiscount;
 
             $detailSale->save();
         }
 
         // Update total price, discount, cash, change
+        $isWeird = false;
+        $weirdMessage = [];
         if($is_success){
-            $isWeird = false;
             $sale = Sale::find($saleId);
 
             if($sale->total != $totalPrice){
+                $weirdMessage[] = 'Total harga sudah dikoreksi! (dari: Rp'.($sale->total).', menjadi: Rp'.$totalPrice.')';
                 $sale->total = $totalPrice;
                 $isWeird = true;
             }
 
             if($sale->discount != $totalDiscount){
+                $weirdMessage[] = 'Total diskon sudah dikoreksi!\n (dari: Rp'.($sale->discount).', menjadi: Rp'.$totalDiscount.')';
                 $sale->discount = $totalDiscount;
+                $isWeird = true;
+            }
+
+            if($sale->change != ($sale->cash-$totalPrice)){
+                $weirdMessage[] = 'Total kembalian sudah dikoreksi!\n (dari: Rp'.($sale->change).', menjadi: Rp'.($sale->cash-$totalPrice).')';
+                $sale->change = $sale->cash-$totalPrice;
                 $isWeird = true;
             }
 
@@ -84,8 +97,9 @@ class DetailSaleController extends Controller
                 $sale->change = 0;
                 $sale->cash = 0;
                 $sale->save();
-                return response()->json(['message' => 'HAYO NGECIT']);
+                return response()->json(['message' => 'Transaksi Batal!\nUang tidak cukup!\nSeharusnya bayar '.($totalPrice) , 'status' => 'notenough']);
             }
+            $sale->save();
         }
 
         // Decrease medicine if it's 100% sure
@@ -96,7 +110,13 @@ class DetailSaleController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Transaction details added successfully!'. ($is_success? ' (PAID) ':' (CANCELLED) ')]);
+        return response()->json(
+            [
+                'status' => $isWeird? 'weird':'success',
+                'weirdMessage' => $weirdMessage,
+                'message' => 'Transaction details added successfully!'. ($is_success? ' (PAID) ':' (CANCELLED) ')
+            ]
+        );
     }
 
     public function show(Sale $sale, Request $request): View
