@@ -28,11 +28,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row d-flex align-items-center justify-content-center">
+                    <div class="row d-flex align-items-center justify-content-center ms-2">
                         @can('cashier')
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?sales" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?sales" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?sales" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -73,7 +73,7 @@
                         @can('admin')
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?profit" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -86,7 +86,7 @@
                             </div>
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?medicine" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?medicines" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
-                                    <div class="card" style="width: 100%;">
+                                    <div class="card" style="width: 90%;">
                                         <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?employee" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                         @endcan
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>
