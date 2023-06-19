@@ -81,7 +81,7 @@ MyApotex is built using several resources and libraries, including:
 - [jQuery](https://jquery.com)
 - [Corporate UI](https://www.creative-tim.com/product/corporate-ui-dashboard)
 
-## 👨‍💻 Development Team
+## 👨‍💻 Developer Team
 
 - [Alfiki Diastama Afan Firdaus](https://github.com/alfikiafan)
 - [Afif Nur Fauzi](https://github.com/alscheift)
