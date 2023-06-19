@@ -6,7 +6,7 @@
 @include('components.footer')
 </main>
 @include('components.configurator')
-  <!--   Core JS Files   -->
+  <!-- Control Center for Corporate UI Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('js/core/popper.min.js') }}"></script>
   <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
   <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>

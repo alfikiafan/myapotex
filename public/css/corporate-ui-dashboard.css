@@ -417,6 +417,7 @@ button,
 [type="button"],
 [type="reset"],
 [type="submit"] {
+  appearance: button;
   -webkit-appearance: button;
 }
 
@@ -478,6 +479,7 @@ legend+* {
 
 [type="search"] {
   outline-offset: -2px;
+  appearance: textfield;
   -webkit-appearance: textfield;
 }
 
@@ -499,6 +501,7 @@ legend+* {
 
 ::file-selector-button {
   font: inherit;
+  appearance: button;
   -webkit-appearance: button;
 }
 
@@ -2488,7 +2491,7 @@ progress {
 }
 
 .table-group-divider {
-  border-top: calc(2 * $table-border-width) solid currentColor;
+  border-top: calc(2 * var(--table-border-width)) solid currentColor;
 }
 
 .caption-top {
@@ -5591,7 +5594,7 @@ fieldset:disabled .btn {
 }
 
 .page-item:not(:first-child) .page-link {
-  margin-left: calc($pagination-border-width * -1);
+  margin-left: calc(var(--pagination-border-width) * -1);
 }
 
 .page-item:first-child .page-link {
@@ -22532,8 +22535,6 @@ hr.horizontal.gray-light {
   }
 }
 
-@use "sass:math";
-
 .navbar-vertical .navbar-brand>img,
 .navbar-vertical .navbar-brand-img {
   max-width: 100%;
@@ -25243,6 +25244,7 @@ p {
   -ms-touch-action: manipulation;
   touch-action: manipulation;
   background: #fff;
+  box-shadow: 0 0.5rem 1.5rem -0.25rem rgba(12, 26, 36, 0.15), 0 0.5rem 0.6275rem -0.3125rem rgba(12, 26, 36, 0.06);
   -webkit-box-shadow: 0 0.5rem 1.5rem -0.25rem rgba(12, 26, 36, 0.15), 0 0.5rem 0.6275rem -0.3125rem rgba(12, 26, 36, 0.06);
 }
 
@@ -26362,9 +26364,11 @@ span.flatpickr-weekday {
   background: #fff;
   cursor: default;
   box-shadow: inset 0 0 1px #fff, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
-  webkit-transition: .3s ease 0s;
+  transition: .3s ease 0s;
+  -webkit-transition: .3s ease 0s;
   -moz-transition: .3s ease 0s;
   -ms-transition: .3s ease 0s;
+  transform: .3s ease 0s;
   -o-transform: .3s ease 0s;
   transition: .3s ease 0s;
 }
@@ -26994,6 +26998,7 @@ pre[class*="language-"] {
 }
 
 .swiper-virtual .swiper-slide {
+  backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
 }
@@ -27275,6 +27280,7 @@ button.swiper-pagination-bullet {
 .swiper-scrollbar {
   border-radius: 10px;
   position: relative;
+  touch-action: none;
   -ms-touch-action: none;
   background: rgba(0, 0, 0, 0.1);
 }
@@ -27575,5 +27581,3 @@ button.swiper-pagination-bullet {
   font-size: 1rem;
   color: #0f172a;
 }
-
-/*# sourceMappingURL=dashboard-free.css.map */
