@@ -10,10 +10,10 @@ MyApotex adalah aplikasi manajemen apotek yang dibangun menggunakan Laravel. Apl
 - **Logout**: Fitur logout yang dapat digunakan admin dan kasir untuk keluar dari sistem.
 - **Data Obat**: Fitur berisi informasi mengenai data obat yang berisi nama, merek, kategori, stok/kuantitas, diskon, dan harga.
 - **Pencarian Obat**: Fitur pencarian data obat yang dapat digunakan admin dan kasir untuk melakukan filter atau pencarian data obat berdasarkan keyword yang diinginkan.
-- **Edit/Manipulasi Obat**: Fitur edit/manipulasi data obat yang dapat digunakan admin untuk menambahkan data obat baru, mengedit data obat, dan menghapus data obat yang diinginkan.
+- **Manajemen Data Obat**: Fitur edit/manipulasi data obat yang dapat digunakan admin untuk menambahkan data obat baru, mengedit data obat, dan menghapus data obat yang diinginkan.
 - **Data Akun**: Fitur berisi informasi mengenai data akun semua pengguna yang berisi nama, email, role, dan tanggal bergabung.
 - **Pencarian Akun**: Fitur pencarian data akun semua pengguna yang dapat digunakan admin untuk melakukan filter atau pencarian data akun semua pengguna berdasarkan keyword yang diinginkan.
-- **Edit Akun**: Fitur edit/manipulasi data akun semua pengguna yang dapat digunakan admin untuk menambahkan data akun baru dan menghapus data akun yang diinginkan.
+- **Manajemen Data Akun**: Fitur edit/manipulasi data akun semua pengguna yang dapat digunakan admin untuk menambahkan data akun baru dan menghapus data akun yang diinginkan.
 - **Transaksi Penjualan**: Fitur melihat transaksi penjualan yang dapat digunakan admin untuk melihat transaksi penjualan apa saja yang terjadi.
 - **Buat Transaksi Penjualan**: Fitur membuat transaksi penjualan yang dapat digunakan kasir untuk menambahkan transaksi penjualan baru.
 - **Edit Profil**: Fitur edit profil yang dapat digunakan admin dan kasir untuk melihat informasi profil dan melakukan perubahan pada nama, email, dan password.
