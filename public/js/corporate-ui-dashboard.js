@@ -363,7 +363,6 @@ function sidebarType(a) {
   sidebar.classList.add(color);
 }
 
-
 // Toggle Sidenav
 const iconNavbarSidenav = document.getElementById('iconNavbarSidenav');
 const iconSidenav = document.getElementById('iconSidenav');
@@ -417,3 +416,10 @@ function selectRole(role) {
   document.getElementById('selectedRoleText').textContent = role;
   document.getElementById('selectedRole').value = role;
 }
+
+// Add current year to the page
+document.addEventListener("DOMContentLoaded", function() {
+  const yearElement = document.getElementById('currentYear');
+  const currentYear = new Date().getFullYear();
+  yearElement.textContent = currentYear;
+});

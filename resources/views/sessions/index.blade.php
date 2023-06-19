@@ -10,7 +10,7 @@
                             <div>
                                 <h6 class="font-weight-semibold text-lg mb-0">Dashboard</h6>
                                 @can('admin')
-                                <p class="text-sm mb-sm-0">Admin Dashboard Page</p>
+                                <p class="text-sm mb-sm-0">Administrator Dashboard Page</p>
                                 @elsecan('cashier')
                                 <p class="text-sm mb-sm-0">Cashier Dashboard Page</p>
                                 @endcan
@@ -22,7 +22,7 @@
                             <div class="card mb-3">
                                 <img src="https://source.unsplash.com/600x100?pharmacy" class="card-img-top" alt="Pharmacy">
                                 <div class="card-body">
-                                    <h5 class="card-title text-center">Welcome to Pharmacy Management System</h5>
+                                    <h5 class="card-title text-center">Welcome to MyApotex - Pharmacy Management System</h5>
                                     <p class="card-text text-center">Your Trusted Partner in Health</p>
                                 </div>
                             </div>
@@ -33,11 +33,10 @@
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
                                     <div class="card" style="width: 90%;">
-                                        <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?sales" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">Rp{{ number_format($totalSalesToday, 2, ',', '.') }}</h5>
-                                            <p class="card-text text-center">Number of Your Transactions</p>
+                                            <p class="card-text text-center">Your Total Transactions</p>
                                             <p class="card-text text-center">Today</p>
                                         </div>
                                     </div>
@@ -50,7 +49,7 @@
                                         <img src="https://source.unsplash.com/400x80?sales" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">Rp{{ number_format($totalSalesThisMonth, 2, ',', '.') }}</h5>
-                                            <p class="card-text text-center">Number of Your Transactions</p>
+                                            <p class="card-text text-center">Your Total Transactions</p>
                                             <p class="card-text text-center">This Month</p>
                                         </div>
                                     </div>
@@ -59,11 +58,10 @@
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
                                     <div class="card" style="width: 90%;">
-                                        <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?sales" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">Rp{{ number_format($totalSalesThisYear, 2, ',', '.') }}</h5>
-                                            <p class="card-text text-center">Number of Your Transactions</p>
+                                            <p class="card-text text-center">Your Total Transactions</p>
                                             <p class="card-text text-center">This Year</p>
                                         </div>
                                     </div>
@@ -74,7 +72,6 @@
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
                                     <div class="card" style="width: 90%;">
-                                        <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?profit" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">Rp{{ number_format($totalSales, 2, ',', '.') }}</h5>
@@ -87,11 +84,10 @@
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
                                     <div class="card" style="width: 90%;">
-                                        <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?medicine" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">{{ $totalMedicine }}</h5>
-                                            <p class="card-text text-center">Total All Medicines</p>
+                                            <p class="card-text text-center">Total Medicines</p>
                                             <p class="card-text text-center">This Moment</p>
                                         </div>
                                     </div>
@@ -100,7 +96,6 @@
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
                                     <div class="card" style="width: 90%;">
-                                        <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?medicines" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">{{ $totalMedicineLessThan10 }}</h5>
@@ -117,7 +112,6 @@
                             <div class="col-md-4 col-lg-3 col-xl-3 mb-4">
                                 <div class="py-1 px-1">
                                     <div class="card" style="width: 90%;">
-                                        <!-- Card content -->
                                         <img src="https://source.unsplash.com/400x80?employee" class="card-img-top" alt="Medicines">
                                         <div class="card-body">
                                             <h5 class="card-title text-center">Cashier: {{ $totalCashier }}, Admin: {{ $totalAdmin }}</h5>
