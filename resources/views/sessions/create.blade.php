@@ -34,12 +34,18 @@
                                             <input type="email" name="email" id="email" class="form-control"
                                                 placeholder="Enter your email address"
                                                 aria-label="Email" aria-describedby="email-addon">
+                                            @error('email')
+                                            <div class="text-xs text-danger mt-1" role="alert">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <label>Password</label>
                                         <div class="mb-3">
                                             <input type="password" name="password" id="password" class="form-control"
                                                 placeholder="Enter password"
                                                 aria-label="Password" aria-describedby="password-addon">
+                                            @error('password')
+                                            <div class="text-xs text-danger mt-1" role="alert">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <div class="form-check form-check-info text-left mb-0">

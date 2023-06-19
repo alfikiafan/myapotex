@@ -55,11 +55,13 @@ class DetailSaleController extends Controller
             $detailSale->sale_id = $saleId;
             $detailSale->medicine_id = $medicineIds[$i];
             $detailSale->quantity = $quantities[$i];
-            $detailSale->price = $prices[$i];
-            $detailSale->discount = $discounts[$i];
-            $detailSale->subtotal = $subtotals[$i];
 
             $meds = Medicine::find($medicineIds[$i]);
+
+            $detailSale->price = $meds->price;
+            $detailSale->discount = $meds->discount;
+            $detailSale->subtotal = $quantities[$i] * ($meds->price*(1  - $meds->discount));
+
             $medsPrice = $meds->price;
             $medsDiscount = $medsPrice * $meds->discount;
             $totalPrice += $quantities[$i] * ($medsPrice - $medsDiscount);
