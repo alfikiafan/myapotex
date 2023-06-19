@@ -2,7 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Choose README Language: [English](README.md) | [Bahasa Indonesia](README-ID.md)
+## Choose Language
+[Bahasa Indonesia](README-ID.md) | [English](README.md)
 
 MyApotex is a pharmacy management application built using Laravel. This application provides features to facilitate the management of medicines, user data, sales transactions, and account management.
 
