@@ -10,7 +10,6 @@ use App\Models\Medicine;
 use App\Models\DetailSale;
 use Illuminate\View\View;
 
-
 class SaleController extends Controller
 {
     public function index() :View|RedirectResponse
@@ -51,14 +50,13 @@ class SaleController extends Controller
                 $sales = $sales->orderBy('created_at', $date);
             }
 
-            $sales = $sales->paginate(10);
+            $sales = $sales->paginate(8);
 
             return view('sales.index', compact('sales'));
         } else if(auth()->user()->can('cashier')){
             $sales = Sale::with('detailSales', 'detailSales.medicine')->get();
             $medicines = Medicine::all();
             $lastId = Sale::max('id');
-            $newId;
             if ($lastId > 0) {
                 $lastIdNumber = intval(substr($lastId, 1));
                 $newIdNumber = $lastIdNumber + 1;

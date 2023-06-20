@@ -40,7 +40,7 @@ class MedicineController extends Controller
             $medicines = $medicines->orderBy('price', $sortPrice);
         }
 
-        $medicines = $medicines->paginate(80);
+        $medicines = $medicines->paginate(8);
 
         return view('medicines.index', compact('medicines'));
     }
