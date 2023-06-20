@@ -76,7 +76,7 @@
                         <form action="{{ route('accounts.destroy', $user->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm mb-0 ms-1 btn-danger" onclick="return confirm('Are you sure to delete this medicine?')">
+                            <button type="submit" class="btn btn-sm mb-0 ms-1 btn-danger" onclick="return confirm('Are you sure to delete this account?')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
