@@ -282,6 +282,34 @@ class MedicineSeeder extends Seeder
             'discount' => 0,
             'price' => 15000,
         ]);
+
+        Medicine::create([
+            'name' => 'Pinisilin',
+            'brand' => 'Nexium',
+            'category' => 'Tablet',
+            'quantity' => 75,
+            'discount' => 0,
+            'price' => 43000,
+        ]);
+
+        Medicine::create([
+            'name' => 'Caphalospolin',
+            'brand' => 'Nexium',
+            'category' => 'Tablet',
+            'quantity' => 55,
+            'discount' => 0,
+            'price' => 9000,
+        ]);
+
+        Medicine::create([
+            'name' => 'Aminoglikosida',
+            'brand' => 'Nexium',
+            'category' => 'Tablet',
+            'quantity' => 7,
+            'discount' => 0,
+            'price' => 23000,
+        ]);
+
         Medicine::create([
             'name' => 'Paracetamol',
             'brand' => 'Oskadon',
