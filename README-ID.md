@@ -1,7 +1,5 @@
 # MyApotex
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
 MyApotex adalah aplikasi manajemen apotek yang dibangun menggunakan Laravel. Aplikasi ini menyediakan fitur-fitur untuk mempermudah proses manajemen obat, data pengguna, transaksi penjualan, dan pengelolaan akun.
 
 ## Pilih Bahasa
@@ -94,4 +92,4 @@ MyApotex dibangun menggunakan beberapa sumber daya dan library, termasuk:
 
 ## 📄 Lisensi
 
-MyApotex dilisensikan di bawah [MIT License](https://opensource.org/licenses/MIT).
+MyApotex dilisensikan di bawah [Non-commercial License](LICENSE).
