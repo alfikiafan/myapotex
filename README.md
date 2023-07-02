@@ -1,7 +1,5 @@
 # MyApotex
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
 ## Choose Language
 [Bahasa Indonesia](README-ID.md) | [English](README.md)
 
@@ -94,4 +92,4 @@ MyApotex is built using several resources and libraries, including:
 
 ## 📄 License
 
-MyApotex is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+MyApotex is licensed under the [Non-commercial License](LICENSE).
